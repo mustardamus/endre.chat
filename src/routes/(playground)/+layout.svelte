@@ -6,6 +6,7 @@
   <div class="p-5 flex">
     <div class="bg-gray-400 rounded-l-lg">
       <a href="/playground/NavBar">NavBar</a>
+      <a href="/playground/Chat">Chat</a>
     </div>
 
     <div class="w-full shadow-lg p-5 border border-gray-400 rounded-r-lg">
@@ -18,8 +19,6 @@
   a {
     display: inline-block;
     padding: 6px 12px;
-    min-width: 200px;
-    text-align: right;
   }
 
   a:hover {
