@@ -8,4 +8,5 @@
   Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
 </p>
 
-<img src={`data:image/png;base64,${data.avatar.b64_json}`} alt="" />
+<!-- avatar example -->
+<!-- <img src={`data:image/png;base64,${data.avatar.b64_json}`} alt="" /> -->
