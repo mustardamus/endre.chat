@@ -15,14 +15,14 @@ export const actions = {
     const name = data.get("name");
     let errors = {};
 
-    if (name.length < 5) {
+    if (name?.length < 5) {
       errors = {
         ...errors,
         name: { value: name, message: "Must be at least 5 characters" },
       };
     }
 
-    if (!name || name.length === 0) {
+    if (!name || name?.length === 0) {
       errors = {
         ...errors,
         name: { value: name, message: "Is required" },
