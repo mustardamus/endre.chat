@@ -16,8 +16,12 @@
     "start": "node build/index.js",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "db:reset": "rm -rf .db && npm run db:migrate",
+    "db:studio": "prisma studio",
     "n:db:migrate": "nix-shell --command 'npx prisma migrate dev'",
     "n:db:seed": "nix-shell --command 'npx prisma db seed'",
+    "n:db:reset": "rm -rf .db && npm run n:db:migrate",
+    "n:db:studio": "nix-shell --command 'npx prisma studio'",
     "n:dev": "nix-shell --command 'npm run dev'"
   },
   "prisma": {

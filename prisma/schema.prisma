@@ -12,7 +12,7 @@ datasource db {
 
 model Filter {
   id          Int      @id @default(autoincrement())
-  name        String
+  name        String   @unique
   description String
   prompt      String
   createdAt   DateTime @default(now())
@@ -29,6 +29,7 @@ model User {
   updatedAt DateTime  @updatedAt
   rooms     Room[]
   messages  Message[]
+  Room      Room[]    @relation("Admin")
 }
 
 model Room {
@@ -38,11 +39,12 @@ model Room {
   topicFiltered String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  adminUserId   Int
-  users         User[]
-  messages      Message[]
+  admin         User      @relation(fields: [adminId], references: [id], name: "Admin")
+  adminId       Int
   filter        Filter    @relation(fields: [filterId], references: [id])
   filterId      Int
+  users         User[]
+  messages      Message[]
 }
 
 model Message {

@@ -3,7 +3,9 @@ import db from "$lib/db.js";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-  const rooms = await db.room.findMany();
+  const rooms = await db.room.findMany({
+    include: { messages: true },
+  });
 
   return { rooms };
 }

@@ -10,10 +10,13 @@
 </script>
 
 {#each data.rooms as room}
-  <div>{room.name}</div>
+  <div><b>{room.name}</b></div>
+  {#each room.messages as message}
+    <div>
+      {message.contentFiltered}
+    </div>
+  {/each}
 {/each}
-
-{JSON.stringify(form)}
 
 <form method="POST">
   <Input

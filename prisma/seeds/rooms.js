@@ -4,5 +4,7 @@ export default [
   },
   {
     name: "pirate1",
+    topicOriginal: "Welcome bruv",
+    topicFiltered: "Arrrr",
   },
 ];
