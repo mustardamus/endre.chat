@@ -29,13 +29,16 @@
   },
   "dependencies": {
     "@prisma/client": "^4.6.0",
+    "blobs": "^2.3.0-beta.2",
     "dateformat": "^5.0.3",
+    "lodash": "^4.17.21",
     "openai": "^3.2.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
     "@sveltejs/adapter-node": "^1.2.3",
     "@sveltejs/kit": "^1.5.0",
+    "@types/lodash": "^4.14.191",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",

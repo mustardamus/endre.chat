@@ -7,6 +7,7 @@
     <div class="bg-gray-400 rounded-l-lg">
       <a href="/playground/NavBar">NavBar</a>
       <a href="/playground/Chat">Chat</a>
+      <a href="/playground/UserInfo">UserInfo</a>
     </div>
 
     <div class="w-full shadow-lg p-5 border border-gray-400 rounded-r-lg">
@@ -17,7 +18,7 @@
 
 <style>
   a {
-    display: inline-block;
+    display: block;
     padding: 6px 12px;
   }
 

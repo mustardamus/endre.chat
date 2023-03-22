@@ -30,6 +30,7 @@
       placeholder={label}
       class={inputClass}
       bind:value
+      on:keyup
     />
   {:else if type === "email"}
     <input
@@ -39,6 +40,7 @@
       placeholder={label}
       class={inputClass}
       bind:value
+      on:keyup
     />
   {:else if type === "password"}
     <input
@@ -48,6 +50,7 @@
       placeholder={label}
       class={inputClass}
       bind:value
+      on:keyup
     />
   {/if}
 
