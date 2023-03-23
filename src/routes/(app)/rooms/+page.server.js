@@ -12,7 +12,7 @@ export async function load({ params }) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-  default: async ({ request }) => {
+  default: async ({ request, locals }) => {
     const data = await request.formData();
     const name = data.get("name");
     let errors = {};
