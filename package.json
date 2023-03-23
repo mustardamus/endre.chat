@@ -33,6 +33,7 @@
     "dateformat": "^5.0.3",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
+    "rxjs": "^7.8.0",
     "svelte-kit-cookie-session": "^3.3.2"
   },
   "devDependencies": {
