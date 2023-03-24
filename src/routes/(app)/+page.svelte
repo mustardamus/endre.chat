@@ -11,6 +11,9 @@
     const sse = new EventSource("/api/messages/test");
     sse.onmessage = (x) => {
       messages.push(x);
+
+      // See https://svelte.dev/docs#component-format-script-2-assignments-are-reactive
+      messages = messages;
     };
     return () => sse.close();
   }
@@ -33,7 +36,7 @@
 
 {#each messages as message}
   <div>
-    {message}
+    {message.data}
   </div>
 {/each}
 
