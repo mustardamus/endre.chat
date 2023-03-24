@@ -7,8 +7,12 @@
       title: "Home",
     },
     {
-      href: "/about",
-      title: "About",
+      href: "/profile",
+      title: "Profile",
+    },
+    {
+      href: "/rooms",
+      title: "Rooms",
     },
   ];
 
@@ -45,6 +49,7 @@
         href="/"
         aria-label="logo"
         aria-current="page"
+        on:click={() => (isMenuActive = false)}
         class="
           flex items-center gap-2 py-3 text-lg whitespace-nowrap
           focus:outline-none lg:flex-1
@@ -104,7 +109,6 @@
       </button>
 
       <ul
-        role="menubar"
         aria-label="Select page"
         class={`
           absolute top-0 left-0 z-[-1] h-[28.5rem] w-full justify-center
@@ -133,6 +137,7 @@
                 ${entry.href === $page.url.pathname ? "text-emerald-500" : ""}
               `}
               href={entry.href}
+              on:click={() => (isMenuActive = false)}
             >
               <span>{entry.title}</span>
             </a>

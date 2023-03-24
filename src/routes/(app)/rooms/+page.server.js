@@ -1,11 +1,10 @@
-import { error, fail } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import db from "$lib/db.js";
+import getCurrentUser from "$lib/helpers/getCurrentUser.js";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-  const rooms = await db.room.findMany({
-    include: { messages: true },
-  });
+  const rooms = await db.room.findMany();
 
   return { rooms };
 }
@@ -35,6 +34,27 @@ export const actions = {
       return fail(400, { errors });
     }
 
-    return { success: true };
+    const user = await getCurrentUser(locals);
+
+    if (!user) {
+      return fail(400, "Missing user");
+    }
+
+    const filter = await db.filter.findFirst(); // TODO make dynamic
+
+    if (!filter) {
+      return fail(400, "Missing filter");
+    }
+
+    const room = await db.room.create({
+      data: {
+        name,
+        admin: { connect: { id: user.id } },
+        filter: { connect: { id: filter.id } },
+      },
+    });
+
+    throw redirect(303, `/rooms/${room.name}`);
+    return {}; // is needed to work, otherwise throws 405
   },
 };

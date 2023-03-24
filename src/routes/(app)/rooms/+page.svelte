@@ -10,12 +10,9 @@
 </script>
 
 {#each data.rooms as room}
-  <div><b>{room.name}</b></div>
-  {#each room.messages as message}
-    <div>
-      {message.contentFiltered}
-    </div>
-  {/each}
+  <div>
+    <a href={`/rooms/${room.name}`}>{room.name}</a>
+  </div>
 {/each}
 
 <form method="POST">
