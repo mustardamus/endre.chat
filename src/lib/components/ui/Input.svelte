@@ -105,13 +105,14 @@
     />
   </svg> -->
 
-  <!-- <small
-    class="
+  {#if error?.length}
+    <small
+      class="
         flex text-xs w-full py-1 px-4 transition text-slate-400 absolute
-        justify-between peer-invalid:text-pink-500
+        justify-between text-pink-500
       "
-  >
-    <span>Text field with helper text</span>
-    <span class="text-slate-500">1/10</span>
-  </small> -->
+    >
+      <span>{error}</span>
+    </small>
+  {/if}
 </div>

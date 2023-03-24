@@ -23,8 +23,8 @@ model Filter {
 model User {
   id        Int       @id @default(autoincrement())
   token     String    @unique
-  name      String
-  avatarSvg String
+  name      String?
+  avatarSvg String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   rooms     Room[]
