@@ -1,12 +1,10 @@
 /** @type {import('@sveltejs/kit').LayoutServerLoad} */
-
 export function load({ locals }) {
-  const retObj = {
+  const data = {
     session: locals.session.data,
     currentUser: locals.currentUser,
   };
 
-  delete retObj.currentUser.token;
-
-  return retObj;
+  delete data.currentUser?.token;
+  return data;
 }

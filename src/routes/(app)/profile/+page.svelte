@@ -5,19 +5,30 @@
   /** @type {import('./$types').PageData} */
   export let data;
 
-  /** @type {import('./$types').ActionData} */
-  export let form;
-
-  let avatarSvg = "";
-  let name = "";
-
-  $: avatarSvg = data.user?.avatarSvg;
-  $: name = form?.name || data.user?.name;
+  let avatarSvg = data.currentUser?.avatarSvg || "";
+  let name = data.currentUser?.name || "";
+  let errors = {};
 
   async function onAvatarClick() {
-    const response = await fetch("/api/avatar", { method: "PUT" });
-    const json = await response.json();
-    avatarSvg = json.avatarSvg;
+    const response = await fetch("/api/users", {
+      method: "PUT",
+      body: JSON.stringify({ updateAvatarSvg: true }),
+    });
+    const user = await response.json();
+    avatarSvg = user.avatarSvg;
+  }
+
+  async function onSubmit() {
+    const response = await fetch("/api/users", {
+      method: "PUT",
+      body: JSON.stringify({ name }),
+    });
+
+    if (response.ok) {
+      errors = {};
+    } else {
+      errors = await response.json();
+    }
   }
 </script>
 
@@ -34,21 +45,17 @@
     </div>
   </div>
 
-  <form method="POST" class="flex-grow pl-7 pt-5">
+  <form class="flex-grow pl-7 pt-5" on:submit|preventDefault={onSubmit}>
     <Input
       type="text"
       label="Username"
       name="name"
-      value={name}
-      error={form?.errors?.name?.message}
+      bind:value={name}
+      error={errors?.name?.message}
     />
 
     <div class="flex pt-6">
       <Button>Save</Button>
-
-      {#if form?.success}
-        <div class="p-10px text-sm">Saved!</div>
-      {/if}
     </div>
   </form>
 </div>

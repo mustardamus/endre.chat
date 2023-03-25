@@ -1,4 +1,4 @@
-import { error, fail, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import db from "$lib/db.js";
 
 /** @type {import('./$types').PageServerLoad} */
@@ -11,6 +11,10 @@ export async function load({ params }) {
 /** @type {import('./$types').Actions} */
 export const actions = {
   default: async ({ request, locals }) => {
+    if (!locals.currentUser) {
+      return fail(400, "Missing user");
+    }
+
     const data = await request.formData();
     const name = data.get("name");
     let errors = {};
@@ -33,12 +37,6 @@ export const actions = {
       return fail(400, { errors });
     }
 
-    const user = locals.currentUser;
-
-    if (!user) {
-      return fail(400, "Missing user");
-    }
-
     const filter = await db.filter.findFirst(); // TODO make dynamic
 
     if (!filter) {
@@ -48,7 +46,7 @@ export const actions = {
     const room = await db.room.create({
       data: {
         name,
-        admin: { connect: { id: user.id } },
+        admin: { connect: { id: locals.currentUser.id } },
         filter: { connect: { id: filter.id } },
       },
     });
