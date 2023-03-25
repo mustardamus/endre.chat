@@ -10,6 +10,7 @@ declare global {
   namespace App {
     interface Locals {
       session: import("svelte-kit-cookie-session").Session<SessionData>;
+      currentUser: object | null;
     }
 
     interface PageData {

@@ -1,12 +1,11 @@
 import { error, fail } from "@sveltejs/kit";
 import { v4 as uuidv4 } from "uuid";
 import db from "$lib/db.js";
-import getCurrentUser from "$lib/helpers/getCurrentUser.js";
 import getAvatarSvg from "$lib/helpers/getAvatarSvg.js";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
-  let user = await getCurrentUser(locals);
+  let user = locals.currentUser;
 
   if (!user) {
     user = await db.user.create({
@@ -17,18 +16,14 @@ export async function load({ locals }) {
     });
 
     locals.session.set({ token: user.token });
+    delete user.token;
   }
 
   if (!user) {
     throw error(500);
   }
 
-  return {
-    user: {
-      name: user.name,
-      avatarSvg: user.avatarSvg,
-    },
-  };
+  return { user };
 }
 
 /** @type {import('./$types').Actions} */

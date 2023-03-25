@@ -1,6 +1,5 @@
 import { error, fail, redirect } from "@sveltejs/kit";
 import db from "$lib/db.js";
-import getCurrentUser from "$lib/helpers/getCurrentUser.js";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
@@ -34,7 +33,7 @@ export const actions = {
       return fail(400, { errors });
     }
 
-    const user = await getCurrentUser(locals);
+    const user = locals.currentUser;
 
     if (!user) {
       return fail(400, "Missing user");
