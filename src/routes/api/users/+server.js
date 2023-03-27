@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as blobs2 from "blobs/v2";
 import random from "lodash/random";
 import db from "$lib/db";
+import suite from "$lib/validations/user.js";
 
 function getRandomColorHex() {
   return "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
@@ -60,18 +61,8 @@ export async function PUT({ locals, request }) {
       },
     });
   } else {
-    const { userName } = body;
-    let errors = {};
-
-    if (!userName || userName?.length === 0) {
-      errors = {
-        ...errors,
-        userName: { value: userName, message: "Is required" },
-      };
-    }
-
-    if (Object.keys(errors).length) {
-      return new Response(JSON.stringify(errors), { status: 400 });
+    if (!suite(body).isValid()) {
+      throw error("Validation failed");
     }
 
     user = await db.user.update({
