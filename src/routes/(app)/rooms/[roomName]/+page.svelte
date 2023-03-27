@@ -3,7 +3,8 @@
   export let data;
 </script>
 
-<h1 class="text-4xl py-10">{data.room.name}</h1>
+<h1 class="text-4xl pt-10">{data.room.name}</h1>
+<h2 class="text-2xl pb-10">{data.room.filter.name}</h2>
 
 {#each data.room.messages as message}
   <div class="flex" id="messages">
