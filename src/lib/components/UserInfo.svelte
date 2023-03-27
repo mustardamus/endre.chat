@@ -34,7 +34,7 @@
       label="Username"
       name="userName"
       bind:value={name}
-      error={errors?.name?.message}
+      error={errors?.userName?.join(", ")}
     />
   </div>
 </div>

@@ -28,14 +28,17 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@felte/validator-vest": "^1.0.12",
     "@prisma/client": "^4.6.0",
     "blobs": "^2.3.0-beta.2",
     "dateformat": "^5.0.3",
+    "felte": "^1.2.7",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
     "rxjs": "^7.8.0",
     "svelte-kit-cookie-session": "^3.3.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vest": "^4.6.9"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",

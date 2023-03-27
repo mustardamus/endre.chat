@@ -60,13 +60,13 @@ export async function PUT({ locals, request }) {
       },
     });
   } else {
-    const { name } = body;
+    const { userName } = body;
     let errors = {};
 
-    if (!name || name?.length === 0) {
+    if (!userName || userName?.length === 0) {
       errors = {
         ...errors,
-        name: { value: name, message: "Is required" },
+        userName: { value: userName, message: "Is required" },
       };
     }
 
@@ -77,7 +77,7 @@ export async function PUT({ locals, request }) {
     user = await db.user.update({
       where,
       data: {
-        name: body.name,
+        name: body.userName,
       },
     });
   }

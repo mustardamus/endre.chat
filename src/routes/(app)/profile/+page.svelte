@@ -1,4 +1,7 @@
 <script>
+  import { createForm } from "felte";
+  import { validator } from "@felte/validator-vest";
+  import suite from "$lib/validations/user.js";
   import UserInfo from "$lib/components/UserInfo.svelte";
   import Button from "$lib/components/ui/Button.svelte";
 
@@ -6,25 +9,29 @@
   export let data;
 
   let avatarSvg = data.user?.avatarSvg || "";
-  let name = data.user?.name || "";
-  let errors = {};
 
-  async function onSubmit() {
-    const response = await fetch("/api/users", {
-      method: "PUT",
-      body: JSON.stringify({ name }),
-    });
+  const { form, errors } = createForm({
+    extend: validator({ suite }),
 
-    if (response.ok) {
-      errors = {};
-    } else {
-      errors = await response.json();
-    }
-  }
+    initialValues: {
+      userName: data.user?.name || "",
+    },
+
+    onSubmit: async (values) => {
+      const body = JSON.stringify({
+        userName: values.userName,
+      });
+      const response = await fetch("/api/users", { method: "PUT", body });
+
+      if (response.ok) {
+        console.log("gewd");
+      }
+    },
+  });
 </script>
 
-<form on:submit|preventDefault={onSubmit}>
-  <UserInfo bind:name bind:avatarSvg bind:errors />
+<form use:form>
+  <UserInfo bind:avatarSvg errors={$errors} />
 
   <div class="flex pt-6">
     <Button>Save</Button>
