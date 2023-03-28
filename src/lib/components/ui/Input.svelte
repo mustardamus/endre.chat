@@ -108,8 +108,8 @@
   {#if error?.length}
     <small
       class="
-        flex text-xs w-full py-1 px-4 transition text-slate-400 absolute
-        justify-between text-pink-500
+        text-xs w-full py-1 px-4 transition text-slate-400 justify-between
+        text-pink-500 block
       "
     >
       <span>{error}</span>

@@ -24,7 +24,13 @@ export async function POST({ locals, request, fetch }) {
     throw error("Validation failed");
   }
 
-  const filter = await db.filter.findFirst();
+  const filter = await db.filter.findFirst({
+    where: { id: body.filterId },
+  });
+
+  if (!filter) {
+    throw error("Filter not found");
+  }
 
   const room = await db.room.create({
     data: {
