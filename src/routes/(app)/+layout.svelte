@@ -1,18 +1,14 @@
 <script>
   import NavBar from "$lib/components/NavBar.svelte";
-
-  let navBarHeightRem = 2;
-  let navBarHeightRemStr = `${navBarHeightRem}rem`;
-  let containerPassingTopRemStr = `${navBarHeightRem * 2}rem`;
 </script>
 
 <div class="h-screen relative">
   <div class="fixed top-0 left-0 w-full">
-    <NavBar height={navBarHeightRemStr} />
+    <NavBar height="2rem" />
   </div>
 
-  <main class={`container mx-auto h-[calc(100% - ${navBarHeightRemStr})`}>
-    <div class={`pt-[${containerPassingTopRemStr}]`}>
+  <main class="container mx-auto">
+    <div class="pt-[4rem]">
       <slot />
     </div>
   </main>
