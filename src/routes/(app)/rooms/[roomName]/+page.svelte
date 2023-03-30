@@ -13,6 +13,8 @@
   </div>
 {/each}
 
+<div class="fixed left-0 bottom-0">message input</div>
+
 <style>
   :global(#messages svg) {
     transform-origin: left top;

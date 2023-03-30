@@ -16,6 +16,8 @@
     },
   ];
 
+  export let height = "5.5rem";
+
   let isMenuActive = false;
 
   function onToggleMenu() {
@@ -41,9 +43,10 @@
   >
     <nav
       aria-label="main navigation"
-      class="
-        flex h-[5.5rem] items-stretch justify-between font-medium text-slate-700
-      "
+      class={`
+        flex h-[${height}] items-stretch justify-between font-medium
+        text-slate-700
+      `}
     >
       <a
         href="/"
