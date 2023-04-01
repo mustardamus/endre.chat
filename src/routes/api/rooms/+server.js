@@ -10,6 +10,8 @@ export async function POST({ locals, request, fetch }) {
 
   const body = await request.json();
 
+  console.log(locals.currentUser);
+
   // set username when creating a fresh room for the first time
   if (locals.currentUser.name.length === 0 && body.userName?.length !== 0) {
     await fetch("/api/users", {

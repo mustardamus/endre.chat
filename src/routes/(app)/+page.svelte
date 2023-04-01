@@ -12,7 +12,6 @@
   function subscribe() {
     const sse = new EventSource("/api/messages/test");
     sse.addEventListener("message", (x) => {
-      console.log(x);
       messages.push(x);
 
       // See https://svelte.dev/docs#component-format-script-2-assignments-are-reactive

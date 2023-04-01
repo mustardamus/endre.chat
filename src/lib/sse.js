@@ -26,14 +26,19 @@ export function createSSE(last_id = 0, retry = 0) {
      * @param {import('node:events').EventEmitter} eventEmitter
      * @param {string} event
      */
-    async subscribe(observer) {
+    async subscribe(eventEmitter, roomId) {
+      const eventName = `chat-${roomId}`;
+      function listener(/** @type {any} */ data) {
+        console.log(`chat-${roomId}`, data);
+        writer.write({ event: "message", data });
+      }
+
       let intervalId = setInterval(() => writer.write({ event: "ping" }), 5000);
-      let subscription = observer.subscribe((msg) => {
-        console.log(msg);
-        writer.write({ event: "message", data: msg });
-      });
+
+      eventEmitter.on(eventName, listener);
       await writer.closed.catch(() => {});
-      subscription.unsubscribe();
+      clearInterval(intervalId);
+      eventEmitter.off(eventName, listener);
     },
   };
 }

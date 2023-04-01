@@ -1,6 +1,24 @@
 import db from "$lib/db";
 import { json, error } from "@sveltejs/kit";
 import suite from "$lib/validations/message.js";
+import { bus } from "$lib/bus";
+import { createSSE } from "$lib/sse.js";
+
+/** @type {import('./$types').RequestHandler} */
+export async function GET({ url }) {
+  const roomId = url.searchParams.get("roomId");
+  const { readable, subscribe } = createSSE();
+
+  subscribe(bus, roomId);
+
+  return new Response(readable, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
+  });
+}
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ locals, request }) {
@@ -19,17 +37,19 @@ export async function POST({ locals, request }) {
     include: { users: true },
   });
 
+  console.log(room);
+
   if (!room) {
     throw error("Room not found");
   }
 
-  const checkUser = room.users.filter((user) => {
-    return user.token === locals.currentUser.token;
-  });
+  // const checkUser = room.users.filter((user) => {
+  //   return user.token === locals.currentUser.token;
+  // });
 
-  if (checkUser.length === 0) {
-    throw error("Not allowed to post in room, no member");
-  }
+  // if (checkUser.length === 0) {
+  //   throw error("Not allowed to post in room, no member");
+  // }
 
   const message = await db.message.create({
     data: {
@@ -39,6 +59,11 @@ export async function POST({ locals, request }) {
       room: { connect: { id: room.id } },
     },
   });
+
+  bus.emit(
+    `chat-${room.id}`,
+    Object.assign({ userName: locals.currentUser.name }, message)
+  );
 
   return json(message);
 }
