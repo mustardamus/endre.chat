@@ -29,7 +29,10 @@
 
 <div id="messages">
   {#each messages as message}
-    <ChatMessage {message} />
+    <ChatMessage
+      {message}
+      isByCurrentUser={message.user.name === data.currentUser.name}
+    />
   {/each}
 </div>
 
@@ -48,10 +51,3 @@
     Send
   </button>
 </form>
-
-<style>
-  :global(#messages svg) {
-    transform-origin: left top;
-    transform: scale(0.5);
-  }
-</style>

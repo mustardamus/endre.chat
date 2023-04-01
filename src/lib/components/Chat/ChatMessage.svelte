@@ -10,21 +10,37 @@
     contentOriginal: "",
     createdAt: "",
   };
+  export let isByCurrentUser = false;
 </script>
 
-<div class="flex">
-  <div class="w-16">
+<div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
+  <div class="avatar w-[64px]">
     {@html message.user.avatarSvg}
   </div>
 
   <div class="flex-grow">
-    <div class="bg-gray-200 px-7 py-5 rounded ml-3 shadow-lg">
+    <div class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg">
       {message.contentFiltered || message.contentOriginal}
     </div>
 
-    <div class="text-right text-sm p-1">
+    <div class="metadata text-sm px-9 pt-2">
       <span class="text-gray-700">{message.user.name}</span>
       <span class="text-gray-400">- {dateformat(message.createdAt)}</span>
     </div>
   </div>
 </div>
+
+<style>
+  :global(.chat-message .avatar svg) {
+    transform-origin: left top;
+    transform: scale(0.5);
+  }
+
+  .chat-message.is-by-current-user .avatar {
+    order: 9999;
+  }
+
+  .chat-message:not(.flex.is-by-current-user) .metadata {
+    text-align: right;
+  }
+</style>
