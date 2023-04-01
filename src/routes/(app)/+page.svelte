@@ -1,7 +1,9 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   /** @type {import('./$types').PageData} */
   export let data;
+
+  let subscription = null;
 
   export let messages = [];
 
@@ -9,15 +11,25 @@
 
   function subscribe() {
     const sse = new EventSource("/api/messages/test");
-    sse.onmessage = (x) => {
+    sse.addEventListener("message", (x) => {
+      console.log(x);
       messages.push(x);
 
       // See https://svelte.dev/docs#component-format-script-2-assignments-are-reactive
       messages = messages;
-    };
+    });
     return () => sse.close();
   }
-  onMount(subscribe);
+
+  onMount(() => {
+    subscription = subscribe();
+  });
+
+  function unsubscribe() {
+    if (subscription) subscription();
+  }
+
+  onDestroy(unsubscribe);
 
   async function send() {
     const res = await fetch("/api/messages/test", {

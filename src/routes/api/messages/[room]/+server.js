@@ -1,24 +1,18 @@
 import { json } from "@sveltejs/kit";
 import Server from "$lib/server.js";
+import { createSSE } from "$lib/sse.js";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {
   const room = Server.getRoom(params.room);
-  const subscription = null;
-  const stream = new ReadableStream({
-    start(controller) {
-      controller.enqueue(`event: ping\n`);
-      room.subject.subscribe((msg) =>
-        controller.enqueue(`event: message\ndata:${msg}\n\n`)
-      );
-      setInterval(() => controller.enqueue(`event: ping\n`), 5000);
-    },
-    cancel() {
-      if (subscription) subscription.unsubscribe();
-    },
-  });
 
-  return new Response(stream, {
+  const { readable, subscribe } = createSSE();
+
+  console.log(subscribe);
+
+  subscribe(room.subject);
+
+  return new Response(readable, {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
