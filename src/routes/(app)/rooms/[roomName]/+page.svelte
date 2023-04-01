@@ -9,25 +9,34 @@
 
   $: messages = data?.room?.messages || [];
 
-  function onSubmit() {
-    messages.push({
-      user: {
-        name: data.currentUser.name,
-        avatarSvg: data.currentUser.avatarSvg,
-      },
-      contentOriginal: message,
-      createdAt: Date.now(),
-    });
+  async function onSubmit() {
+    const body = JSON.stringify({ message, roomId: data.room.id });
+    const response = await fetch("/api/messages", { method: "POST", body });
 
-    messages = messages; // triggers reactivity
-    message = "";
+    if (response.ok) {
+      const messageData = await response.json();
+
+      messages.push({
+        user: {
+          name: data.currentUser.name,
+          avatarSvg: data.currentUser.avatarSvg,
+        },
+        contentFiltered: messageData.contentFiltered,
+        createdAt: message.createdAt,
+      });
+
+      messages = messages; // triggers reactivity
+      message = "";
+
+      // TODO scroll down
+    }
   }
 </script>
 
 <h1 class="text-4xl pt-10">{data.room.name}</h1>
 <h2 class="text-2xl pb-10">{data.room.filter.name}</h2>
 
-<div id="messages">
+<div id="messages" class="py-8">
   {#each messages as message}
     <ChatMessage
       {message}
