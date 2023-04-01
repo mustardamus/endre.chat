@@ -3,6 +3,7 @@ import { json, error } from "@sveltejs/kit";
 import suite from "$lib/validations/message.js";
 import { bus } from "$lib/bus";
 import { createSSE } from "$lib/sse.js";
+import { transform } from "$lib/openai.js";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
@@ -34,7 +35,7 @@ export async function POST({ locals, request }) {
 
   const room = await db.room.findUnique({
     where: { id: body.roomId },
-    include: { users: true },
+    include: { users: true, filter: true },
   });
 
   console.log(room);
@@ -51,10 +52,14 @@ export async function POST({ locals, request }) {
   //   throw error("Not allowed to post in room, no member");
   // }
 
+  const contentFiltered = await transform(room.filter.prompt, body.message);
+
+  console.log(contentFiltered);
+
   const message = await db.message.create({
     data: {
       contentOriginal: body.message,
-      contentFiltered: `TODO filter ${body.message}`,
+      contentFiltered,
       user: { connect: { id: locals.currentUser.id } },
       room: { connect: { id: room.id } },
     },
