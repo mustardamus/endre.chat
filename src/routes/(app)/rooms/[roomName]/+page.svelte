@@ -1,4 +1,5 @@
 <script>
+  import RoomJoin from "$lib/components/Room/Join.svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import { onMount, onDestroy } from "svelte";
 
@@ -66,32 +67,50 @@
   }
 
   onDestroy(unsubscribe);
+
+  async function onRoomJoinSubmit({ detail }) {
+    const body = JSON.stringify({ ...detail, roomId: data.room.id });
+    console.log(body);
+    const response = await fetch("/api/rooms", { method: "PUT", body });
+
+    if (response.ok) {
+      data.isCurrentUserInRoom = true;
+    }
+  }
 </script>
 
-<h1 class="text-4xl pt-10">{data.room.name}</h1>
-<h2 class="text-2xl pb-10">{data.room.filter.name}</h2>
+{#if data.isCurrentUserInRoom}
+  <h1 class="text-4xl pt-10">{data.room.name}</h1>
+  <h2 class="text-2xl pb-10">{data.room.filter.name}</h2>
 
-<div id="messages" class="py-8">
-  {#each messages as message}
-    <ChatMessage
-      {message}
-      isByCurrentUser={message.user.name === data.currentUser.name}
+  <div id="messages" class="py-8">
+    {#each messages as message}
+      <ChatMessage
+        {message}
+        isByCurrentUser={message.user.name === data.currentUser.name}
+      />
+    {/each}
+  </div>
+
+  <form
+    class="fixed left-0 bottom-0 w-full flex border-t-5 border-gray-600 h-16"
+    on:submit|preventDefault={onSubmit}
+  >
+    <input
+      class="w-full p-4 text-lg focus-visible:outline-none"
+      type="text"
+      placeholder="Your message here..."
+      bind:value={message}
     />
-  {/each}
-</div>
 
-<form
-  class="fixed left-0 bottom-0 w-full flex border-t-5 border-gray-600 h-16"
-  on:submit|preventDefault={onSubmit}
->
-  <input
-    class="w-full p-4 text-lg focus-visible:outline-none"
-    type="text"
-    placeholder="Your message here..."
-    bind:value={message}
+    <button class="h-full block bg-gray-600 px-10 color-white cursor-pointer">
+      Send
+    </button>
+  </form>
+{:else}
+  <RoomJoin
+    room={data.room}
+    currentUser={data.currentUser}
+    on:submit={onRoomJoinSubmit}
   />
-
-  <button class="h-full block bg-gray-600 px-10 color-white cursor-pointer">
-    Send
-  </button>
-</form>
+{/if}

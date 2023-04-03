@@ -2,7 +2,7 @@
   import { createForm } from "felte";
   import { validator } from "@felte/validator-vest";
   import userSuite from "$lib/validations/user.js";
-  import roomSuite from "$lib/validations/room.js";
+  import { createRoom as suite } from "$lib/validations/room.js";
   import { goto } from "$app/navigation";
   import Input from "$lib/components/ui/Input.svelte";
   import UserInfo from "$lib/components/UserInfo.svelte";
@@ -23,7 +23,7 @@
   }
 
   const { form, errors, setData } = createForm({
-    extend: [validator({ suite: userSuite }), validator({ suite: roomSuite })],
+    extend: [validator({ suite: userSuite }), validator({ suite })],
 
     initialValues: {
       userName: data.user?.name || "",

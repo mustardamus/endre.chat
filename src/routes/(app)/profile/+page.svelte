@@ -37,3 +37,9 @@
     <Button>Save</Button>
   </div>
 </form>
+
+{#each data.user.rooms as room}
+  <div>
+    <a href={`/rooms/${room.name}`}>{room.name}</a>
+  </div>
+{/each}
