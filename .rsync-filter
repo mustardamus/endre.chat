@@ -1,5 +1,5 @@
 - .git
 - .svelte-kit
+- .db
 - build
 - node_modules
-- .env

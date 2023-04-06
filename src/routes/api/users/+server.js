@@ -10,6 +10,7 @@ function getRandomColorHex() {
 }
 
 function getAvatarSvg() {
+  return "TODO";
   return blobs2.svg(
     {
       seed: random(1, 99999),
