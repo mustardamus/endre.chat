@@ -2,32 +2,28 @@ import db from "$lib/db";
 import { json, error } from "@sveltejs/kit";
 import { createRoom, joinRoom } from "$lib/validations/room.js";
 
-async function setUserName(fetch, userName) {
-  await fetch("/api/users", {
-    method: "PUT",
-    body: JSON.stringify({ userName }),
-  });
+async function ensureUserName(fetch, locals, userName) {
+  if (locals.currentUser.name === null && userName) {
+    await fetch("/api/users", {
+      method: "PUT",
+      body: JSON.stringify({ userName }),
+    });
+  }
 }
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ locals, request, fetch }) {
   if (!locals.currentUser) {
-    throw error("User missing");
+    throw error(400, "User missing");
   }
 
   const body = await request.json();
 
-  console.log(locals.currentUser);
-
-  // set username when creating a fresh room for the first time
-  if (locals.currentUser.name.length === 0 && body.userName?.length !== 0) {
-    await setUserName(fetch, body.userName);
-  }
-
+  await ensureUserName(fetch, locals, body?.userName);
   delete body.userName;
 
   if (!createRoom(body).isValid()) {
-    throw error("Validation failed");
+    throw error(400, "Validation failed");
   }
 
   const filter = await db.filter.findFirst({
@@ -35,7 +31,7 @@ export async function POST({ locals, request, fetch }) {
   });
 
   if (!filter) {
-    throw error("Filter not found");
+    throw error(400, "Filter not found");
   }
 
   const room = await db.room.create({
@@ -52,17 +48,15 @@ export async function POST({ locals, request, fetch }) {
 /** @type {import('./$types').RequestHandler} */
 export async function PUT({ locals, request, fetch }) {
   if (!locals.currentUser) {
-    throw error("User missing");
+    throw error(400, "User missing");
   }
 
   const body = await request.json();
 
-  if (body.userName && body.userName.length) {
-    await setUserName(fetch, body.userName);
-  }
+  await ensureUserName(fetch, locals, body?.userName);
 
   if (!joinRoom(body).isValid()) {
-    throw error("Validation failed");
+    throw error(400, "Validation failed");
   }
 
   const room = await db.room.update({
@@ -75,7 +69,7 @@ export async function PUT({ locals, request, fetch }) {
   });
 
   if (!room) {
-    throw error("Room not found");
+    throw error(400, "Room not found");
   }
 
   return json({ success: true });

@@ -17,6 +17,7 @@
   ];
 
   export let height = "5.5rem";
+  export let brand = "Brand";
 
   let isMenuActive = false;
 
@@ -24,8 +25,6 @@
     isMenuActive = !isMenuActive;
   }
 </script>
-
-<template lang="md"> could be preview </template>
 
 <header
   class="
@@ -59,7 +58,7 @@
         "
       >
         <img src="/favicon.png" class="w-9" alt="logo" />
-        Brand
+        {brand}
       </a>
 
       <button
