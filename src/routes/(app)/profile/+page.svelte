@@ -9,13 +9,11 @@
   /** @type {import('./$types').PageData} */
   export let data;
 
-  let avatarSeed = data.user?.avatarSeed || 1;
-
   const { form, errors } = createForm({
     extend: validator({ suite }),
 
     initialValues: {
-      userName: data.user?.name || "",
+      userName: data.currentUser?.name || "",
     },
 
     onSubmit: async (values) => {
@@ -32,14 +30,18 @@
 </script>
 
 <form use:form>
-  <UserInfo bind:avatarSeed errors={$errors} />
+  <UserInfo
+    name={data.currentUser?.name}
+    seed={data.currentUser?.avatarSeed}
+    errors={$errors}
+  />
 
   <div class="flex pt-6">
     <Button>Save</Button>
   </div>
 </form>
 
-{#each data.user.rooms as room}
+{#each data.currentUser.rooms as room}
   <div>
     <a href={`/rooms/${room.name}`}>{room.name}</a>
   </div>

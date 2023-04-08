@@ -28,7 +28,7 @@
       addMessage({
         user: {
           name: data.currentUser.name,
-          avatarSvg: data.currentUser.avatarSvg,
+          avatarSeed: data.currentUser.avatarSeed,
         },
         contentFiltered: message.contentFiltered,
         createdAt: message.createdAt,
@@ -45,7 +45,7 @@
         addMessage({
           user: {
             name: message.userName,
-            avatarSvg: data.currentUser.avatarSvg,
+            avatarSeed: data.currentUser.avatarSeed,
           },
           contentFiltered: message.contentFiltered,
           createdAt: message.createdAt,

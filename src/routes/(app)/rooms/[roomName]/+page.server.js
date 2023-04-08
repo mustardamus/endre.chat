@@ -26,8 +26,6 @@ export async function load({ params, locals, fetch }) {
   }
 
   const currentUserInRoom = room.users.filter((user) => {
-    // TODO works when navigating with links, but nor arriving on /rooms/roonName
-    console.log(user.token, currentUser.token, locals.currentUser.token);
     return user.token === currentUser.token;
   });
 

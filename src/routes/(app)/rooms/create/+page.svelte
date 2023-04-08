@@ -8,11 +8,11 @@
   import UserInfo from "$lib/components/UserInfo.svelte";
   import Button from "$lib/components/ui/Button.svelte";
   import RadioGroup from "$lib/components/ui/RadioGroup.svelte";
+  import Avatar from "$lib/components/Avatar.svelte";
 
   /** @type {import('./$types').PageData} */
   export let data;
 
-  let avatarSvg = data.user?.avatarSvg || "";
   let filters = [];
   let filterId;
 
@@ -26,7 +26,7 @@
     extend: [validator({ suite: userSuite }), validator({ suite })],
 
     initialValues: {
-      userName: data.user?.name || "",
+      userName: data.currentUser?.name || "",
       roomName: "",
       filterId,
     },
@@ -62,12 +62,18 @@
     error={$errors.filterId?.join(",")}
   />
 
-  {#if data.currentUser && data.currentUser.name}
+  {#if data.currentUser?.name}
+    <Avatar seed={data.currentUser.avatarSeed} />
     Create as {data.currentUser.name}
+
     <!-- for validation to work -->
     <input type="hidden" value={data.currentUser.name} name="userName" />
   {:else}
-    <UserInfo bind:avatarSvg errors={$errors} />
+    <UserInfo
+      name={data.currentUser?.name}
+      seed={data.currentUser?.avatarSeed}
+      errors={$errors}
+    />
   {/if}
 
   <Button>Create</Button>

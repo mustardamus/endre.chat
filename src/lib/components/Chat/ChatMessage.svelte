@@ -1,10 +1,11 @@
 <script>
   import dateformat from "dateformat";
+  import Avatar from "../Avatar.svelte";
 
   export let message = {
     user: {
       name: "",
-      avatarSvg: "",
+      avatarSeed: 0,
     },
     contentFiltered: "",
     contentOriginal: "",
@@ -15,7 +16,7 @@
 
 <div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
   <div class="avatar w-[64px]">
-    {@html message.user.avatarSvg}
+    <Avatar seed={message.user.avatarSeed} />
   </div>
 
   <div class="flex-grow">
