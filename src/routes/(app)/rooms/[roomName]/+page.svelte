@@ -37,6 +37,8 @@
   }
 
   function subscribe() {
+    // NGINX settings:
+    // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
     const sse = new EventSource(`/api/messages?roomId=${data.room.id}`);
     sse.addEventListener("message", async (event) => {
       const message = JSON.parse(event.data);

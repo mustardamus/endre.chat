@@ -11,12 +11,12 @@ export const handle = handleSession(
     secure: !dev, // HTTPS in non production environment
   },
   async ({ event, resolve }) => {
-    const { token } = event.locals.session.data;
+    let { token } = event.locals.session.data;
 
     if (token) {
       event.locals.currentUser = await db.user.findUnique({ where: { token } });
     } else {
-      const token = uuidv4();
+      token = uuidv4();
       event.locals.currentUser = await db.user.create({
         data: {
           token,
