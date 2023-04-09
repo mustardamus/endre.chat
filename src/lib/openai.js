@@ -19,5 +19,11 @@ export async function transform(systemPrompt, message) {
     ],
   });
 
-  return result.data.choices[0].message.content;
+  const { model, usage, choices } = result.data;
+
+  return {
+    model,
+    usage,
+    message: choices[0].message.content,
+  };
 }

@@ -4,6 +4,7 @@ import suite from "$lib/validations/message.js";
 import { bus } from "$lib/bus";
 import { createSSE } from "$lib/sse.js";
 import { transform } from "$lib/openai.js";
+import { checkRatelimit, hashIpAddress } from "$lib/helpers.js";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
@@ -22,7 +23,7 @@ export async function GET({ url }) {
 }
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ locals, request }) {
+export async function POST({ locals, request, getClientAddress }) {
   if (!locals.currentUser) {
     throw error("User missing");
   }
@@ -52,9 +53,17 @@ export async function POST({ locals, request }) {
   //   throw error("Not allowed to post in room, no member");
   // }
 
-  const contentFiltered = await transform(room.filter.prompt, body.message);
+  const ipHash = hashIpAddress(getClientAddress());
 
-  console.log(contentFiltered);
+  if (await checkRatelimit(ipHash, 60, 50)) {
+    return json({ error: "Ratelimit reached!" }, { status: 429 });
+  }
+
+  const {
+    message: contentFiltered,
+    usage,
+    model,
+  } = await transform(room.filter.prompt, body.message);
 
   const message = await db.message.create({
     data: {
@@ -62,6 +71,9 @@ export async function POST({ locals, request }) {
       contentFiltered,
       user: { connect: { id: locals.currentUser.id } },
       room: { connect: { id: room.id } },
+      tokensUsed: usage.total_tokens,
+      modelUsed: model,
+      ipHash,
     },
   });
 
