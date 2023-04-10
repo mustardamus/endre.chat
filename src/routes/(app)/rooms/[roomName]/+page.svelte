@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy, tick } from "svelte";
+  import { invalidateAll } from "$app/navigation";
   import RoomJoin from "$lib/components/Room/Join.svelte";
   import Chat from "$lib/components/Chat/Chat.svelte";
 
@@ -71,10 +72,10 @@
 
   async function onRoomJoinSubmit({ detail }) {
     const body = JSON.stringify({ ...detail, roomId: data.room.id });
-    console.log(body);
     const response = await fetch("/api/rooms", { method: "PUT", body });
 
     if (response.ok) {
+      await invalidateAll(); // re-loads the currentUser if just set
       data.isCurrentUserInRoom = true;
     }
   }
