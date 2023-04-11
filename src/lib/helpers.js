@@ -31,3 +31,7 @@ export function hashIpAddress(ipAddress) {
     .update(ipAddress + salt)
     .digest("hex");
 }
+
+export function getRandomColorHex() {
+  return "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
+}

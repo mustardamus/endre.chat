@@ -67,6 +67,7 @@
       user: {
         name: currentUser.name,
         avatarSeed: currentUser.avatarSeed,
+        avatarColor: currentUser.avatarColor,
       },
       contentFiltered: "",
       contentOriginal: content,
@@ -99,24 +100,6 @@
     );
   }
 
-  // async function sendMessage({ detail }) {
-  //   const body = JSON.stringify({ message: detail, roomId: room.id });
-  //   const response = await fetch("/api/messages", { method: "POST", body });
-
-  //   if (response.ok) {
-  //     const message = await response.json();
-
-  //     addMessage({
-  //       user: {
-  //         name: data.currentUser.name,
-  //         avatarSeed: data.currentUser.avatarSeed,
-  //       },
-  //       contentFiltered: message.contentFiltered,
-  //       createdAt: message.createdAt,
-  //     });
-  //   }
-  // }
-
   function subscribe() {
     // NGINX settings:
     // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
@@ -129,6 +112,7 @@
           user: {
             name: message.userName,
             avatarSeed: currentUser.avatarSeed,
+            avatarColor: currentUser.avatarColor,
           },
           contentFiltered: message.contentFiltered,
           createdAt: message.createdAt,

@@ -1,8 +1,10 @@
 <script>
+  import { browser } from "$app/environment";
   import * as blobs2 from "blobs/v2";
 
   export let canEdit = false;
   export let seed = 1;
+  export let color = "red";
   export let size = 128;
 
   let avatarSvg = "";
@@ -16,26 +18,25 @@
     const response = await fetch("/api/users", { method: "PUT", body });
     const user = await response.json();
     seed = user.avatarSeed;
+    color = user.avatarColor;
   }
 
-  // function getRandomColorHex() {
-  //   return "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
-  // }
-
   $: {
-    avatarSvg = blobs2.svg(
-      {
-        seed,
-        extraPoints: 20,
-        randomness: 50,
-        size,
-      },
-      {
-        fill: "red",
-        stroke: "black",
-        strokeWidth: 3,
-      }
-    );
+    if (browser) {
+      avatarSvg = blobs2.svg(
+        {
+          seed,
+          extraPoints: 20,
+          randomness: 50,
+          size,
+        },
+        {
+          fill: color,
+          stroke: "black",
+          strokeWidth: 3,
+        }
+      );
+    }
   }
 </script>
 

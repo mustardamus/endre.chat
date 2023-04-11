@@ -24,10 +24,6 @@ export async function GET({ url }) {
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ locals, request, getClientAddress }) {
-  if (!locals.currentUser) {
-    throw error("User missing");
-  }
-
   const body = await request.json();
 
   if (!suite(body).isValid()) {
@@ -38,8 +34,6 @@ export async function POST({ locals, request, getClientAddress }) {
     where: { id: body.roomId },
     include: { users: true, filter: true },
   });
-
-  console.log(room);
 
   if (!room) {
     throw error("Room not found");

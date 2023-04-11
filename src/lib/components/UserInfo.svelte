@@ -5,11 +5,12 @@
   export let errors = {};
   export let name = "";
   export let seed = 0;
+  export let color = "red";
 </script>
 
 <div class="flex">
   <div class="cursor-pointer">
-    <Avatar {seed} canEdit={true} />
+    <Avatar {seed} {color} canEdit={true} />
 
     <div class="text-center text-sm text-gray-400">
       Click to regenerate avatar

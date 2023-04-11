@@ -63,7 +63,10 @@
   />
 
   {#if data.currentUser?.name}
-    <Avatar seed={data.currentUser.avatarSeed} />
+    <Avatar
+      seed={data.currentUser.avatarSeed}
+      color={data.currentUser.avatarColor}
+    />
     Create as {data.currentUser.name}
 
     <!-- for validation to work -->

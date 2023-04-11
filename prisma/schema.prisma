@@ -21,15 +21,16 @@ model Filter {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  token      String    @unique
-  name       String?
-  avatarSeed Int?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  rooms      Room[]
-  messages   Message[]
-  Room       Room[]    @relation("Admin")
+  id          Int       @id @default(autoincrement())
+  token       String    @unique
+  name        String?
+  avatarSeed  Int?
+  avatarColor String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  rooms       Room[]
+  messages    Message[]
+  Room        Room[]    @relation("Admin")
 }
 
 model Room {

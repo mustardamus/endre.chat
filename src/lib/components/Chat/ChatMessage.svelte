@@ -20,7 +20,7 @@
 
 <div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
   <div class="avatar w-[64px]">
-    <Avatar seed={message.user.avatarSeed} />
+    <Avatar seed={message.user.avatarSeed} color={message.user.avatarColor} />
   </div>
 
   <div class="flex-grow">

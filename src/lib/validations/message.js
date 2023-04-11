@@ -5,6 +5,10 @@ export default create((data = {}) => {
     enforce(data.message).isNotEmpty();
   });
 
+  test("message", "Username can not be longer than 255 characters", () => {
+    enforce(data.message.length <= 255).isTruthy();
+  });
+
   test("roomId", "roomId is required", () => {
     enforce(data.roomId).isNotEmpty();
   });

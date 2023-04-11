@@ -2,7 +2,7 @@ import { error } from "@sveltejs/kit";
 import db from "$lib/db.js";
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params, locals, fetch }) {
+export async function load({ params, locals }) {
   const room = await db.room.findUnique({
     where: { name: params.roomName },
     include: {
@@ -14,23 +14,19 @@ export async function load({ params, locals, fetch }) {
   });
 
   if (!room) {
-    throw error("room not found");
+    throw error(404, "room not found");
   }
 
-  let currentUser = locals.currentUser;
+  console.log(room);
 
-  if (!currentUser) {
-    const response = await fetch("/api/users", { method: "POST" });
-    const { id } = await response.json();
-    currentUser = await db.user.findUnique({ where: { id } });
-  }
-
+  const currentUser = locals.currentUser;
   const currentUserInRoom = room.users.filter((user) => {
+    console.log(user.token, currentUser.token);
     return user.token === currentUser.token;
   });
-
   const isCurrentUserInRoom = currentUserInRoom.length === 1;
 
+  delete currentUser.token;
   delete room.admin.token;
 
   room.messages = room.messages

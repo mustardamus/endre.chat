@@ -13,10 +13,6 @@ async function ensureUserName(fetch, locals, userName) {
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ locals, request, fetch }) {
-  if (!locals.currentUser) {
-    throw error(400, "User missing");
-  }
-
   const body = await request.json();
 
   await ensureUserName(fetch, locals, body?.userName);
@@ -39,6 +35,7 @@ export async function POST({ locals, request, fetch }) {
       name: body.roomName,
       admin: { connect: { id: locals.currentUser.id } },
       filter: { connect: { id: filter.id } },
+      users: { connect: { id: locals.currentUser.id } },
     },
   });
 
@@ -47,10 +44,6 @@ export async function POST({ locals, request, fetch }) {
 
 /** @type {import('./$types').RequestHandler} */
 export async function PUT({ locals, request, fetch }) {
-  if (!locals.currentUser) {
-    throw error(400, "User missing");
-  }
-
   const body = await request.json();
 
   await ensureUserName(fetch, locals, body?.userName);
@@ -62,14 +55,12 @@ export async function PUT({ locals, request, fetch }) {
   const room = await db.room.update({
     where: { id: body.roomId },
     data: {
-      users: {
-        connect: { id: locals.currentUser.id },
-      },
+      users: { connect: { id: locals.currentUser.id } },
     },
   });
 
   if (!room) {
-    throw error(400, "Room not found");
+    throw error(404, "Room not found");
   }
 
   return json({ success: true });
