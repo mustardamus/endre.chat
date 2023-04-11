@@ -8,13 +8,18 @@ import db from "$lib/db.js";
 export const handle = handleSession(
   {
     secret,
-    secure: !dev, // HTTPS in non production environment
+    secure: !dev, // HTTPS in production environment
   },
   async ({ event, resolve }) => {
     let { token } = event.locals.session.data;
+    let user;
 
     if (token) {
-      event.locals.currentUser = await db.user.findUnique({ where: { token } });
+      user = await db.user.findUnique({ where: { token } });
+    }
+
+    if (user) {
+      event.locals.currentUser = user;
     } else {
       token = uuidv4();
       event.locals.currentUser = await db.user.create({
