@@ -33,6 +33,7 @@
   <UserInfo
     name={data.currentUser?.name}
     seed={data.currentUser?.avatarSeed}
+    color={data.currentUser?.avatarColor}
     errors={$errors}
   />
 
