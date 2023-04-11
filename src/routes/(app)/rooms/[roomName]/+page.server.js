@@ -33,10 +33,15 @@ export async function load({ params, locals, fetch }) {
 
   delete room.admin.token;
 
-  room.messages = room.messages.map((message) => {
-    delete message.user.token;
-    return message;
-  });
+  room.messages = room.messages
+    .map((message) => {
+      delete message.user.token;
+      return message;
+    })
+    .reduce((acc, curr) => {
+      acc[curr.id] = curr;
+      return acc;
+    }, {});
 
   room.users = room.users.map((user) => {
     delete user.token;

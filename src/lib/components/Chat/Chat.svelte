@@ -1,23 +1,154 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { onMount, onDestroy, tick } from "svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
 
+  import { nanoid } from "nanoid";
+  import { Map } from "immutable";
+
   export let room;
-  export let messages = [];
+  export let messagesById = Map({});
   export let currentUser;
+
+  onMount(() => {
+    messagesById = Map(room.messages);
+    console.log("onMount", messagesById);
+  });
+
+  $: messages = messagesById.toList().sort((a, b) => {
+    console.log("messages", a, b);
+
+    if (a.createdAt < b.createdAt) {
+      return -1;
+    }
+    if (a.createdAt > b.createdAt) {
+      return 1;
+    }
+    if (a.createdAt === b.createdAt) {
+      return 0;
+    }
+  });
 
   export const scrollDown = () => {
     messagesDiv.scrollTo({ top: 999999999, behavior: "smooth" });
   };
 
-  const dispatch = createEventDispatcher();
+  // const dispatch = createEventDispatcher();
   let message = "";
   let messagesDiv;
 
-  function onSubmit() {
-    dispatch("message", message);
+  // function onSubmit() {
+  //   dispatch("message", message);
+  //   message = "";
+  // }
+
+  async function onSubmit() {
+    let id = nanoid();
+    addOptimisticMessage(id, message);
+
+    const body = JSON.stringify({
+      id,
+      message,
+      roomId: room.id,
+    });
     message = "";
+    const response = await fetch("/api/messages", { method: "POST", body });
+
+    if (response.ok) {
+      const { id, contentFiltered } = await response.json();
+      resolveOptimisticMessage(id, { contentFiltered });
+    }
   }
+
+  async function addOptimisticMessage(id, content) {
+    // messages.push(message);
+    // messages = messages; // triggers reactivity
+    messagesById = messagesById.set(id, {
+      user: {
+        name: currentUser.name,
+        avatarSeed: currentUser.avatarSeed,
+      },
+      contentFiltered: "",
+      contentOriginal: content,
+      createdAt: new Date(),
+      isOptimistic: true,
+      pending: true,
+      error: false,
+    });
+    await tick();
+    scrollDown();
+  }
+
+  async function addMessage(id, message) {
+    // messages.push(message);
+    // messages = messages; // triggers reactivity
+    messagesById = messagesById.set(id, message);
+    await tick();
+    scrollDown();
+  }
+
+  function resolveOptimisticMessage(id, message) {
+    // messages.push(message);
+    // messages = messages; // triggers reactivity
+    messagesById = messagesById.set(
+      id,
+      Object.assign(messagesById.get(id), {
+        contentFiltered: message.contentFiltered,
+        pending: false,
+      })
+    );
+  }
+
+  // async function sendMessage({ detail }) {
+  //   const body = JSON.stringify({ message: detail, roomId: room.id });
+  //   const response = await fetch("/api/messages", { method: "POST", body });
+
+  //   if (response.ok) {
+  //     const message = await response.json();
+
+  //     addMessage({
+  //       user: {
+  //         name: data.currentUser.name,
+  //         avatarSeed: data.currentUser.avatarSeed,
+  //       },
+  //       contentFiltered: message.contentFiltered,
+  //       createdAt: message.createdAt,
+  //     });
+  //   }
+  // }
+
+  function subscribe() {
+    // NGINX settings:
+    // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
+    const sse = new EventSource(`/api/messages?roomId=${room.id}`);
+    sse.addEventListener("message", async (event) => {
+      const message = JSON.parse(event.data);
+
+      if (currentUser.id !== message.userId) {
+        addMessage(message.id, {
+          user: {
+            name: message.userName,
+            avatarSeed: currentUser.avatarSeed,
+          },
+          contentFiltered: message.contentFiltered,
+          createdAt: message.createdAt,
+        });
+      }
+    });
+    return () => sse.close();
+  }
+
+  let subscription = null;
+
+  onMount(() => {
+    subscription = subscribe();
+  });
+
+  function unsubscribe() {
+    if (subscription) subscription();
+  }
+
+  onDestroy(unsubscribe);
 </script>
 
 <div class="h-full flex flex-col overflow-hidden">
@@ -27,7 +158,7 @@
   </div>
 
   <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
-    {#each messages as message}
+    {#each messages.toJS() as message}
       <ChatMessage
         {message}
         isByCurrentUser={message.user.name === currentUser?.name}

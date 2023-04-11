@@ -7,68 +7,68 @@
   /** @type {import('./$types').PageData} */
   export let data;
 
-  let messages = [];
+  // let messages = [];
   let scrollDown;
 
-  $: messages = data.room?.messages;
+  // $: messages = data.room?.messages;
 
-  async function addMessage(message) {
-    messages.push(message);
-    messages = messages; // triggers reactivity
-    await tick();
-    scrollDown();
-  }
+  // async function addMessage(message) {
+  //   messages.push(message);
+  //   messages = messages; // triggers reactivity
+  //   await tick();
+  //   scrollDown();
+  // }
 
-  async function onMessage({ detail }) {
-    const body = JSON.stringify({ message: detail, roomId: data.room.id });
-    const response = await fetch("/api/messages", { method: "POST", body });
+  // async function onMessage({ detail }) {
+  //   const body = JSON.stringify({ message: detail, roomId: data.room.id });
+  //   const response = await fetch("/api/messages", { method: "POST", body });
 
-    if (response.ok) {
-      const message = await response.json();
+  //   if (response.ok) {
+  //     const message = await response.json();
 
-      addMessage({
-        user: {
-          name: data.currentUser.name,
-          avatarSeed: data.currentUser.avatarSeed,
-        },
-        contentFiltered: message.contentFiltered,
-        createdAt: message.createdAt,
-      });
-    }
-  }
+  //     addMessage({
+  //       user: {
+  //         name: data.currentUser.name,
+  //         avatarSeed: data.currentUser.avatarSeed,
+  //       },
+  //       contentFiltered: message.contentFiltered,
+  //       createdAt: message.createdAt,
+  //     });
+  //   }
+  // }
 
-  function subscribe() {
-    // NGINX settings:
-    // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
-    const sse = new EventSource(`/api/messages?roomId=${data.room.id}`);
-    sse.addEventListener("message", async (event) => {
-      const message = JSON.parse(event.data);
+  // function subscribe() {
+  //   // NGINX settings:
+  //   // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
+  //   const sse = new EventSource(`/api/messages?roomId=${data.room.id}`);
+  //   sse.addEventListener("message", async (event) => {
+  //     const message = JSON.parse(event.data);
 
-      if (data.currentUser.id !== message.userId) {
-        addMessage({
-          user: {
-            name: message.userName,
-            avatarSeed: data.currentUser.avatarSeed,
-          },
-          contentFiltered: message.contentFiltered,
-          createdAt: message.createdAt,
-        });
-      }
-    });
-    return () => sse.close();
-  }
+  //     if (data.currentUser.id !== message.userId) {
+  //       addMessage({
+  //         user: {
+  //           name: message.userName,
+  //           avatarSeed: data.currentUser.avatarSeed,
+  //         },
+  //         contentFiltered: message.contentFiltered,
+  //         createdAt: message.createdAt,
+  //       });
+  //     }
+  //   });
+  //   return () => sse.close();
+  // }
 
-  let subscription = null;
+  // let subscription = null;
 
-  onMount(() => {
-    subscription = subscribe();
-  });
+  // onMount(() => {
+  //   subscription = subscribe();
+  // });
 
-  function unsubscribe() {
-    if (subscription) subscription();
-  }
+  // function unsubscribe() {
+  //   if (subscription) subscription();
+  // }
 
-  onDestroy(unsubscribe);
+  // onDestroy(unsubscribe);
 
   async function onRoomJoinSubmit({ detail }) {
     const body = JSON.stringify({ ...detail, roomId: data.room.id });
@@ -82,13 +82,7 @@
 </script>
 
 {#if data.isCurrentUserInRoom}
-  <Chat
-    room={data.room}
-    {messages}
-    currentUser={data.currentUser}
-    bind:scrollDown
-    on:message={onMessage}
-  />
+  <Chat room={data.room} currentUser={data.currentUser} bind:scrollDown />
 {:else}
   <RoomJoin
     room={data.room}

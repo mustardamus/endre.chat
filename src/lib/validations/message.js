@@ -8,4 +8,8 @@ export default create((data = {}) => {
   test("roomId", "roomId is required", () => {
     enforce(data.roomId).isNotEmpty();
   });
+
+  test("id", "id is required", () => {
+    enforce(data.id).isNotEmpty();
+  });
 });
