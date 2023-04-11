@@ -2,6 +2,7 @@ import { json, error } from "@sveltejs/kit";
 import random from "lodash/random";
 import db from "$lib/db";
 import suite from "$lib/validations/user.js";
+import { getRandomColorHex } from "$lib/helpers";
 
 /** @type {import('./$types').RequestHandler} */
 export async function PUT({ locals, request }) {
@@ -14,6 +15,7 @@ export async function PUT({ locals, request }) {
       where,
       data: {
         avatarSeed: random(100000, 999999),
+        avatarColor: getRandomColorHex(),
       },
     });
   } else {

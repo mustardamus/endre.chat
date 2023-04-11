@@ -30,6 +30,7 @@
         user: {
           name: data.currentUser.name,
           avatarSeed: data.currentUser.avatarSeed,
+          avatarColor: data.currentUser.avatarColor,
         },
         contentFiltered: message.contentFiltered,
         createdAt: message.createdAt,
@@ -49,6 +50,7 @@
           user: {
             name: message.userName,
             avatarSeed: data.currentUser.avatarSeed,
+            avatarColor: data.currentUser.avatarColor,
           },
           contentFiltered: message.contentFiltered,
           createdAt: message.createdAt,

@@ -4,6 +4,7 @@ import { SESSION_SECRET as secret } from "$env/static/private";
 import { v4 as uuidv4 } from "uuid";
 import random from "lodash/random";
 import db from "$lib/db.js";
+import { getRandomColorHex } from "$lib/helpers.js";
 
 export const handle = handleSession(
   {
@@ -26,6 +27,7 @@ export const handle = handleSession(
         data: {
           token,
           avatarSeed: random(100000, 999999),
+          avatarColor: getRandomColorHex(),
         },
       });
 
