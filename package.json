@@ -37,6 +37,7 @@
     "openai": "^3.2.1",
     "svelte-kit-cookie-session": "^3.3.2",
     "uuid": "^9.0.0",
+    "validator": "^13.9.0",
     "vest": "^4.6.9"
   },
   "devDependencies": {
