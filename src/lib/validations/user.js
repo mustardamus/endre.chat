@@ -1,5 +1,5 @@
 import { create, enforce, test } from "vest";
-import { isAlphanumeric } from "validator";
+import { isAlphanumeric } from "./_shared.js";
 
 export default create((data = {}) => {
   test("userName", "Username is required", () => {

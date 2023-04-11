@@ -1,5 +1,5 @@
 import { create, enforce, test } from "vest";
-import { isAlphanumeric } from "validator";
+import isAlphanumeric from "validator/lib/isAlphanumeric";
 
 export const createRoom = create((data = {}) => {
   test("roomName", "Room name is required", () => {
@@ -15,6 +15,7 @@ export const createRoom = create((data = {}) => {
   });
 
   test("roomName", "Room name can only have letters and numbers", () => {
+    console.log("XXX", isAlphanumeric);
     enforce(isAlphanumeric(data.roomName)).isTruthy();
   });
 

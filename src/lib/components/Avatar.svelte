@@ -1,4 +1,5 @@
 <script>
+  import { browser } from "$app/environment";
   import * as blobs2 from "blobs/v2";
 
   export let canEdit = false;
@@ -21,19 +22,21 @@
   }
 
   $: {
-    avatarSvg = blobs2.svg(
-      {
-        seed,
-        extraPoints: 20,
-        randomness: 50,
-        size,
-      },
-      {
-        fill: color,
-        stroke: "black",
-        strokeWidth: 3,
-      }
-    );
+    if (browser) {
+      avatarSvg = blobs2.svg(
+        {
+          seed,
+          extraPoints: 20,
+          randomness: 50,
+          size,
+        },
+        {
+          fill: color,
+          stroke: "black",
+          strokeWidth: 3,
+        }
+      );
+    }
   }
 </script>
 
