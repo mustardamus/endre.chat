@@ -1,5 +1,5 @@
 import { create, enforce, test } from "vest";
-import isAlphanumeric from "validator/lib/isAlphanumeric";
+import { isAlphanumeric } from "./_shared.js";
 
 export const createRoom = create((data = {}) => {
   test("roomName", "Room name is required", () => {
