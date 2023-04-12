@@ -49,7 +49,7 @@ model Room {
 }
 
 model Message {
-  id              Int      @id @default(autoincrement())
+  id              String      @id
   contentOriginal String
   contentFiltered String
   createdAt       DateTime @default(now())

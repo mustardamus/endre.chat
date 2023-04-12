@@ -57,10 +57,11 @@ export async function POST({ locals, request, getClientAddress }) {
     message: contentFiltered,
     usage,
     model,
-  } = await transform(room.filter.prompt, body.message);
+  } = await transform(room.filter.prompt, body.message, false);
 
   const message = await db.message.create({
     data: {
+      id: body.id,
       contentOriginal: body.message,
       contentFiltered,
       user: { connect: { id: locals.currentUser.id } },

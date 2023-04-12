@@ -7,7 +7,21 @@ const openai = new OpenAIApi(configuration);
 const basePromt =
   "You are a text transformer programm. You are only outputting the transformed text. Always try to output the text in the language that was input. ";
 
-export async function transform(systemPrompt, message) {
+const delay = (value, timeout) =>
+  new Promise((res) => setTimeout(() => res(value), timeout));
+
+export async function transform(systemPrompt, message, dryRun = false) {
+  if (dryRun) {
+    return await delay(
+      {
+        model: "",
+        usage: { total_tokens: 0 },
+        message: "Hello World!",
+      },
+      5000
+    );
+  }
+
   const result = await openai.createChatCompletion({
     model: "gpt-4",
     messages: [

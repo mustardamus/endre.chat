@@ -1,6 +1,8 @@
 <script>
   import dateformat from "dateformat";
   import Avatar from "../Avatar.svelte";
+  import ScrambleText from "$lib/components/ScrambleText.svelte";
+  import { Circle } from "svelte-loading-spinners";
 
   export let message = {
     user: {
@@ -10,6 +12,8 @@
     contentFiltered: "",
     contentOriginal: "",
     createdAt: "",
+    isOptimistic: false,
+    isPending: false,
   };
   export let isByCurrentUser = false;
 </script>
@@ -21,12 +25,21 @@
 
   <div class="flex-grow">
     <div class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg">
-      {message.contentFiltered || message.contentOriginal}
+      {#if message.isOptimistic}
+        <ScrambleText
+          targetText={message.contentFiltered}
+          originalText={message.contentOriginal}
+        />
+      {:else}
+        {message.contentFiltered || message.contentOriginal}
+      {/if}
     </div>
 
     <div class="metadata text-sm px-9 pt-2">
       <span class="text-gray-700">{message.user.name}</span>
       <span class="text-gray-400">- {dateformat(message.createdAt)}</span>
+      {#if message.pending}
+        <Circle size="15" color="#FF3E00" unit="px" />{/if}
     </div>
   </div>
 </div>
