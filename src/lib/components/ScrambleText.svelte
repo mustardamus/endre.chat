@@ -1,3 +1,4 @@
+<!-- Source: https://codepen.io/soulwire/pen/mEMPrK -->
 <script>
   export let originalText = "";
   export let targetText = "";
