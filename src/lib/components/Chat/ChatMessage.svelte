@@ -7,6 +7,7 @@
   const dispatch = createEventDispatcher();
 
   export let message = {
+    id: "",
     user: {
       name: "",
       avatarSeed: 0,
@@ -24,6 +25,10 @@
   export const animationDoneHandler = () => {
     animationDone = true;
   };
+
+  export const handleResendClick = () => {
+    dispatch("resend", message);
+  };
 </script>
 
 <div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
@@ -34,16 +39,8 @@
   <div class="flex-grow">
     <div
       class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg"
-      class:bg-red-200={message.error}
+      class:opacity-50={message.error || message.pending}
     >
-      {#if message.error}
-        <p class="font-light">
-          Message could not be send! Reason: {message.errorMessage}
-        </p>
-        <button class="bg-red-200 px-10 color-black cursor-pointer">
-          Resend
-        </button>
-      {/if}
       {#if message.isOptimistic && !animationDone}
         <ScrambleText
           targetText={message.contentFiltered}
@@ -59,12 +56,21 @@
       <span class="text-gray-700">{message.user.name}</span>
       <span class="text-gray-400 mr-1 ml-1">-</span>
       <span class="text-gray-400">{dateformat(message.createdAt)}</span>
-      {#if message.pending}
+      {#if message.error}
+        <div class="i-tabler-exclamation-circle text-red-500 text-xl ml-1" />
+        <div class="ml-1 color-red-500">{message.errorMessage}</div>
+        <button
+          class="ml-1 rounded-full bg-gray-100 color-grey-700 pl-1 pr-1 cursor-pointer"
+          on:click={handleResendClick}
+        >
+          Try resend</button
+        >
+      {:else if message.pending}
         <div
           class="i-svg-spinners:180-ring-with-bg text-grey-100 text-sm ml-1"
         />
       {:else}
-        <div class="i-tabler-checks text-green-500 text-sm ml-1" />
+        <div class="i-tabler-check text-green-500 text-xl ml-1" />
       {/if}
     </div>
   </div>

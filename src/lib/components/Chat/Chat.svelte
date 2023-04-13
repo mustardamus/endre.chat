@@ -10,14 +10,14 @@
   export let messagesById = Map({});
   export let currentUser;
 
+  let messageInput;
+
   onMount(() => {
     messagesById = Map(room.messages);
-    console.log("onMount", messagesById);
+    messageInput.focus();
   });
 
   $: messages = messagesById.toList().sort((a, b) => {
-    console.log("messages", a, b);
-
     if (a.createdAt < b.createdAt) {
       return -1;
     }
@@ -33,6 +33,11 @@
     messagesDiv.scrollTo({ top: 999999999, behavior: "smooth" });
   };
 
+  export const handleResend = (event) => {
+    console.log(event.detail);
+    send(event.detail.id, event.detail.contentOriginal, room.id);
+  };
+
   // const dispatch = createEventDispatcher();
   let message = "";
   let messagesDiv;
@@ -42,18 +47,12 @@
   //   message = "";
   // }
 
-  async function onSubmit() {
-    if (!message.length) return;
-
-    let id = nanoid();
-    addOptimisticMessage(id, message);
-
+  async function send(id, message, roomId) {
     const body = JSON.stringify({
       id,
       message,
-      roomId: room.id,
+      roomId,
     });
-    message = "";
     const response = await fetch("/api/messages", { method: "POST", body });
 
     if (response.ok) {
@@ -65,8 +64,36 @@
     }
   }
 
+  async function onSubmit() {
+    if (!message.length) return;
+    let messageToSend = message;
+    message = "";
+    messageInput.focus();
+
+    let id = nanoid();
+    addOptimisticMessage(id, messageToSend);
+    await send(id, messageToSend, room.id);
+
+    // const body = JSON.stringify({
+    //   id,
+    //   message,
+    //   roomId: room.id,
+    // });
+    // message = "";
+    // const response = await fetch("/api/messages", { method: "POST", body });
+
+    // if (response.ok) {
+    //   const { contentFiltered } = await response.json();
+    //   resolveOptimisticMessage(id, { contentFiltered });
+    // } else {
+    //   const { error } = await response.json();
+    //   errorOptimisticMessage(id, error);
+    // }
+  }
+
   async function addOptimisticMessage(id, content) {
     messagesById = messagesById.set(id, {
+      id,
       user: {
         name: currentUser.name,
         avatarSeed: currentUser.avatarSeed,
@@ -163,6 +190,7 @@
       <ChatMessage
         {message}
         isByCurrentUser={message.user.name === currentUser?.name}
+        on:resend={handleResend}
       />
     {/each}
   </div>
@@ -176,6 +204,7 @@
       type="text"
       placeholder="Your message here..."
       bind:value={message}
+      bind:this={messageInput}
     />
 
     <button class="h-full block bg-gray-600 px-10 color-white cursor-pointer">
