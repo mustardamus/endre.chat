@@ -3,7 +3,6 @@
   import dateformat from "dateformat";
   import Avatar from "../Avatar.svelte";
   import ScrambleText from "$lib/components/ScrambleText.svelte";
-  import { Circle } from "svelte-loading-spinners";
 
   const dispatch = createEventDispatcher();
 
@@ -56,11 +55,17 @@
       {/if}
     </div>
 
-    <div class="metadata text-sm px-9 pt-2">
+    <div class="flex items-center metadata text-sm px-9 pt-2">
       <span class="text-gray-700">{message.user.name}</span>
-      <span class="text-gray-400">- {dateformat(message.createdAt)}</span>
+      <span class="text-gray-400 mr-1 ml-1">-</span>
+      <span class="text-gray-400">{dateformat(message.createdAt)}</span>
       {#if message.pending}
-        <Circle size="15" color="#FF3E00" unit="px" />{/if}
+        <div
+          class="i-svg-spinners:180-ring-with-bg text-grey-100 text-sm ml-1"
+        />
+      {:else}
+        <div class="i-tabler-checks text-green-500 text-sm ml-1" />
+      {/if}
     </div>
   </div>
 </div>
