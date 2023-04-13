@@ -16,6 +16,11 @@
     isPending: false,
   };
   export let isByCurrentUser = false;
+  export let animationDone = false;
+
+  export const animationDoneHandler = () => {
+    animationDone = true;
+  };
 </script>
 
 <div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
@@ -25,10 +30,11 @@
 
   <div class="flex-grow">
     <div class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg">
-      {#if message.isOptimistic}
+      {#if message.isOptimistic && !animationDone}
         <ScrambleText
           targetText={message.contentFiltered}
           originalText={message.contentOriginal}
+          on:done={animationDoneHandler}
         />
       {:else}
         {message.contentFiltered || message.contentOriginal}

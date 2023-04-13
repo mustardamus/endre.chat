@@ -5,6 +5,7 @@ import { bus } from "$lib/bus";
 import { createSSE } from "$lib/sse.js";
 import { transform } from "$lib/openai.js";
 import { checkRatelimit, hashIpAddress } from "$lib/helpers.js";
+import { DEV_MODE } from "$env/static/private";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
@@ -26,7 +27,10 @@ export async function GET({ url }) {
 export async function POST({ locals, request, getClientAddress }) {
   const body = await request.json();
 
-  if (!suite(body).isValid()) {
+  let validationResult = suite(body);
+
+  if (!validationResult.isValid()) {
+    console.log(validationResult.getErrors());
     throw error("Validation failed");
   }
 
@@ -57,11 +61,11 @@ export async function POST({ locals, request, getClientAddress }) {
     message: contentFiltered,
     usage,
     model,
-  } = await transform(room.filter.prompt, body.message, false);
+  } = await transform(room.filter.prompt, body.message, !!DEV_MODE);
 
   const message = await db.message.create({
     data: {
-      id: body.id,
+      uuid: body.id,
       contentOriginal: body.message,
       contentFiltered,
       user: { connect: { id: locals.currentUser.id } },

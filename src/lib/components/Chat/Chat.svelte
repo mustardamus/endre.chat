@@ -55,14 +55,15 @@
     const response = await fetch("/api/messages", { method: "POST", body });
 
     if (response.ok) {
-      const { id, contentFiltered } = await response.json();
+      const { contentFiltered } = await response.json();
       resolveOptimisticMessage(id, { contentFiltered });
+    } else {
+      console.log("Error", response);
+      errorOptimisticMessage(id);
     }
   }
 
   async function addOptimisticMessage(id, content) {
-    // messages.push(message);
-    // messages = messages; // triggers reactivity
     messagesById = messagesById.set(id, {
       user: {
         name: currentUser.name,
@@ -70,6 +71,7 @@
         avatarColor: currentUser.avatarColor,
       },
       contentFiltered: "",
+      errorMessage: "",
       contentOriginal: content,
       createdAt: new Date(),
       isOptimistic: true,
@@ -86,6 +88,19 @@
     messagesById = messagesById.set(id, message);
     await tick();
     scrollDown();
+  }
+
+  function errorOptimisticMessage(id, errorMessage) {
+    // messages.push(message);
+    // messages = messages; // triggers reactivity
+    messagesById = messagesById.set(
+      id,
+      Object.assign(messagesById.get(id), {
+        error: true,
+        errorMessage,
+        pending: false,
+      })
+    );
   }
 
   function resolveOptimisticMessage(id, message) {

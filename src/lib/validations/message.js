@@ -16,4 +16,8 @@ export default create((data = {}) => {
   test("id", "id is required", () => {
     enforce(data.id).isNotEmpty();
   });
+
+  test("id", "id must be below 30 chars", () => {
+    enforce(data.id).shorterThan(30);
+  });
 });

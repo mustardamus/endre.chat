@@ -1,5 +1,7 @@
 <!-- Source: https://codepen.io/soulwire/pen/mEMPrK -->
 <script>
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
   export let originalText = "";
   export let targetText = "";
 
@@ -50,7 +52,7 @@
     }
     htmlOutput = output;
     if (complete === queue.length) {
-      console.log("done");
+      dispatch("done");
     } else {
       frameRequest = requestAnimationFrame(update);
       frame++;
