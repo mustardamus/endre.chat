@@ -43,6 +43,8 @@
   // }
 
   async function onSubmit() {
+    if (!message.length) return;
+
     let id = nanoid();
     addOptimisticMessage(id, message);
 
@@ -58,8 +60,8 @@
       const { contentFiltered } = await response.json();
       resolveOptimisticMessage(id, { contentFiltered });
     } else {
-      console.log("Error", response);
-      errorOptimisticMessage(id);
+      const { error } = await response.json();
+      errorOptimisticMessage(id, error);
     }
   }
 

@@ -30,6 +30,7 @@
   "dependencies": {
     "@felte/validator-vest": "^1.0.12",
     "@prisma/client": "^4.6.0",
+    "@vite-pwa/sveltekit": "^0.2.1",
     "blobs": "^2.3.0-beta.2",
     "dateformat": "^5.0.3",
     "felte": "^1.2.7",

@@ -1,8 +1,11 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import dateformat from "dateformat";
   import Avatar from "../Avatar.svelte";
   import ScrambleText from "$lib/components/ScrambleText.svelte";
   import { Circle } from "svelte-loading-spinners";
+
+  const dispatch = createEventDispatcher();
 
   export let message = {
     user: {
@@ -13,7 +16,8 @@
     contentOriginal: "",
     createdAt: "",
     isOptimistic: false,
-    isPending: false,
+    pending: false,
+    error: false,
   };
   export let isByCurrentUser = false;
   export let animationDone = false;
@@ -29,7 +33,18 @@
   </div>
 
   <div class="flex-grow">
-    <div class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg">
+    <div
+      class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg"
+      class:bg-red-200={message.error}
+    >
+      {#if message.error}
+        <p class="font-light">
+          Message could not be send! Reason: {message.errorMessage}
+        </p>
+        <button class="bg-red-200 px-10 color-black cursor-pointer">
+          Resend
+        </button>
+      {/if}
       {#if message.isOptimistic && !animationDone}
         <ScrambleText
           targetText={message.contentFiltered}

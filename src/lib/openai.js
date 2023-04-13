@@ -15,7 +15,7 @@ export async function transform(systemPrompt, message, dryRun = false) {
     return await delay(
       {
         model: "",
-        usage: { total_tokens: 0 },
+        usage: { total_tokens: 20 },
         message: "Hello World!",
       },
       5000
