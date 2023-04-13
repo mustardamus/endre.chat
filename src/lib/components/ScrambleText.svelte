@@ -1,7 +1,10 @@
 <!-- Source: https://codepen.io/soulwire/pen/mEMPrK -->
 <script>
   import { createEventDispatcher } from "svelte";
+  import { browser } from "$app/environment";
+
   const dispatch = createEventDispatcher();
+
   export let originalText = "";
   export let targetText = "";
 
@@ -59,7 +62,7 @@
     }
   }
 
-  $: if (targetText.length) {
+  $: if (browser && targetText.length) {
     start();
   }
 </script>
