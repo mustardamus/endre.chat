@@ -1,7 +1,7 @@
 <script>
   import { createForm } from "felte";
   import { validator } from "@felte/validator-vest";
-  import { goto } from "$app/navigation";
+  import { invalidateAll, goto } from "$app/navigation";
   import suite from "$lib/validations/user.js";
   import UserInfo from "$lib/components/UserInfo.svelte";
   import Button from "$lib/components/ui/Button.svelte";
@@ -23,6 +23,7 @@
       const response = await fetch("/api/users", { method: "PUT", body });
 
       if (response.ok) {
+        await invalidateAll();
         goto("/");
       }
     },

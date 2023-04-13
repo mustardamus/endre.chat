@@ -1,14 +1,14 @@
 <script>
   import { page } from "$app/stores";
+  import ScrambleText from "./ScrambleText.svelte";
+  import Avatar from "./Avatar.svelte";
+  import Button from "./ui/Button.svelte";
+  import { goto } from "$app/navigation";
 
   export let menuEntries = [
     {
       href: "/",
       title: "Home",
-    },
-    {
-      href: "/profile",
-      title: "Profile",
     },
     {
       href: "/rooms",
@@ -18,6 +18,7 @@
 
   export let height = "5.5rem";
   export let brand = "Brand";
+  export let currentUser;
 
   let isMenuActive = false;
 
@@ -28,16 +29,19 @@
 
 <header
   class="
-    relative z-20 w-full border-b shadow-lg border-b-1 border-slate-200
-    bg-white/90 shadow-slate-700/5 after:absolute after:top-full after:left-0
-    after:z-10 after:block after:h-px after:w-full after:bg-slate-200
-    lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden
+    border-b shadow-lg border-b-1 border-slate-200 bg-white/90
+    shadow-slate-700/5
+
+    after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm
+
+    relative z-20 w-full after:absolute after:top-full after:left-0
+    after:z-10 after:block after:h-px after:w-full lg:after:hidden
   "
 >
   <div
     class="
-      relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl
-      2xl:max-w-[96rem]
+      relative mx-auto max-w-full px-6
+      lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]
     "
   >
     <nav
@@ -57,11 +61,10 @@
           focus:outline-none lg:flex-1
         "
       >
-        <img src="/favicon.png" class="w-9" alt="logo" />
-        {brand}
+        <ScrambleText originalText={brand} targetText={brand} />
       </a>
 
-      <button
+      <!-- <button
         class={`
           relative self-center order-10 visible block w-10 h-10 opacity-100
           lg:hidden
@@ -145,30 +148,35 @@
             </a>
           </li>
         {/each}
-      </ul>
+      </ul> -->
 
-      <!-- <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
-     
-        <a
-          href="#"
-          class="relative inline-flex items-center justify-center w-10 h-10 text-white rounded-full"
-        >
-          <img
-            src="https://i.pravatar.cc/40?img=35"
-            alt="user name"
-            title="user name"
-            width="40"
-            height="40"
-            class="max-w-full rounded-full"
-          />
-          <span
-            class="absolute bottom-0 right-0 inline-flex items-center justify-center gap-1 p-1 text-sm text-white bg-pink-500 border-2 border-white rounded-full"
+      {#if currentUser}
+        <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
+          <a
+            href="/profile"
+            class="
+              relative inline-flex items-center justify-center
+              text-white rounded-full 
+            "
           >
-            <span class="sr-only"> 7 new emails </span>
-          </span>
-        </a>
-  
-      </div> -->
+            <Avatar
+              seed={currentUser.avatarSeed}
+              color={currentUser.avatarColor}
+              size="28"
+              strokeWidth="0"
+            />
+            {#if currentUser.name.length !== 0}
+              <span class="text-gray-500 pl-2">Hi, </span>
+              <span class="text-gray-600">{currentUser.name}</span>
+              <span class="text-gray-500">!</span>
+            {/if}
+          </a>
+
+          <Button class="ml-5" on:click={() => goto("/rooms/create")}>
+            Create Room
+          </Button>
+        </div>
+      {/if}
     </nav>
   </div>
 </header>

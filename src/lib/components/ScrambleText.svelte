@@ -1,4 +1,5 @@
 <script>
+  import { browser } from "$app/environment";
   export let originalText = "";
   export let targetText = "";
 
@@ -56,7 +57,7 @@
     }
   }
 
-  $: if (targetText.length) {
+  $: if (browser && targetText.length) {
     start();
   }
 </script>

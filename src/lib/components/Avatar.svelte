@@ -1,4 +1,5 @@
 <script>
+  import { invalidateAll } from "$app/navigation";
   import { browser } from "$app/environment";
   import * as blobs2 from "blobs/v2";
 
@@ -6,6 +7,7 @@
   export let seed = 1;
   export let color = "red";
   export let size = 128;
+  export let strokeWidth = 3;
 
   let avatarSvg = "";
 
@@ -19,6 +21,8 @@
     const user = await response.json();
     seed = user.avatarSeed;
     color = user.avatarColor;
+
+    await invalidateAll();
   }
 
   $: {
@@ -28,12 +32,12 @@
           seed,
           extraPoints: 20,
           randomness: 50,
-          size,
+          size: +size,
         },
         {
           fill: color,
           stroke: "black",
-          strokeWidth: 3,
+          strokeWidth: +strokeWidth,
         }
       );
     }
