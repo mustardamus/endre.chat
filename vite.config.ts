@@ -13,9 +13,6 @@ export default defineConfig({
       extractors: [extractorSvelte],
     }),
     sveltekit(),
-    SvelteKitPWA({
-      /* pwa options */
-    }),
   ],
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
