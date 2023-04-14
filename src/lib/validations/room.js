@@ -15,7 +15,6 @@ export const createRoom = create((data = {}) => {
   });
 
   test("roomName", "Room name can only have letters and numbers", () => {
-    console.log("XXX", isAlphanumeric);
     enforce(isAlphanumeric(data.roomName)).isTruthy();
   });
 

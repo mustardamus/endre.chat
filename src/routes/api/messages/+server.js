@@ -53,7 +53,7 @@ export async function POST({ locals, request, getClientAddress }) {
 
   const ipHash = hashIpAddress(getClientAddress());
 
-  if (await checkRatelimit(ipHash, 60, 50)) {
+  if (await checkRatelimit(ipHash, 60, 200)) {
     return json({ error: "Ratelimit reached!" }, { status: 429 });
   }
 

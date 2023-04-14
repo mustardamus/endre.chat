@@ -73,22 +73,6 @@
     let id = nanoid();
     addOptimisticMessage(id, messageToSend);
     await send(id, messageToSend, room.id);
-
-    // const body = JSON.stringify({
-    //   id,
-    //   message,
-    //   roomId: room.id,
-    // });
-    // message = "";
-    // const response = await fetch("/api/messages", { method: "POST", body });
-
-    // if (response.ok) {
-    //   const { contentFiltered } = await response.json();
-    //   resolveOptimisticMessage(id, { contentFiltered });
-    // } else {
-    //   const { error } = await response.json();
-    //   errorOptimisticMessage(id, error);
-    // }
   }
 
   async function addOptimisticMessage(id, content) {

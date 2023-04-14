@@ -17,6 +17,11 @@ export default [
   {
     name: "Bavarian",
     description: "Translate all languages to german with bavarian slang",
-    prompt: "Translate tha following text to german with bavarian slang:",
+    prompt: "Translate the following text to german with bavarian slang:",
+  },
+  {
+    name: "🔠🔄➡️😀",
+    description: "Translates text to emojis",
+    prompt: "Translate the following text to emojis only",
   },
 ];

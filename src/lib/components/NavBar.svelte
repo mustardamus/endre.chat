@@ -165,7 +165,7 @@
               size="28"
               strokeWidth="0"
             />
-            {#if currentUser.name.length !== 0}
+            {#if currentUser.name?.length ?? 0 !== 0}
               <span class="text-gray-500 pl-2">Hi, </span>
               <span class="text-gray-600">{currentUser.name}</span>
               <span class="text-gray-500">!</span>
