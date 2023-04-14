@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Filter {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  description String
-  prompt      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  room        Room[]
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  description   String
+  prompt        String
+  needsHistory  Boolean    @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  room          Room[]
 }
 
 model User {

@@ -17,8 +17,6 @@ export async function load({ params, locals }) {
     throw error(404, "room not found");
   }
 
-  console.log(room);
-
   const currentUser = locals.currentUser;
   const currentUserInRoom = room.users.filter((user) => {
     console.log(user.token, currentUser.token);

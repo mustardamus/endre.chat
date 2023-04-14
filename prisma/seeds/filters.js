@@ -22,6 +22,24 @@ export default [
   {
     name: "🔠🔄➡️😀",
     description: "Translates text to emojis",
-    prompt: "Translate the following text to emojis only",
+    prompt: "Translate to emojis only. Do not use any Ascii Characters",
   },
+  {
+    name: "Medival",
+    description: "Translates text to medival language",
+    prompt: "Translate to medival polite language.",
+  },
+  {
+    name: "Positive",
+    description: "Think positive",
+    prompt:
+      "Transform the text in a way that it only contains positive sentiment. Filter out negative sentiment.",
+  },
+  // {
+  //   name: "Rhyme",
+  //   description: "Rhyme",
+  //   prompt:
+  //     "Rewrite the last user promt so that it rhymes. keep the meaning of the message",
+  //   needsHistory: true,
+  // },
 ];

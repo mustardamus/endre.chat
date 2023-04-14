@@ -36,7 +36,7 @@ export async function POST({ locals, request, getClientAddress }) {
 
   const room = await db.room.findUnique({
     where: { id: body.roomId },
-    include: { users: true, filter: true },
+    include: { users: true, filter: true, messages: true },
   });
 
   if (!room) {
@@ -53,15 +53,19 @@ export async function POST({ locals, request, getClientAddress }) {
 
   const ipHash = hashIpAddress(getClientAddress());
 
-  if (await checkRatelimit(ipHash, 60, 200)) {
+  if (await checkRatelimit(ipHash, 60, 300)) {
     return json({ error: "Ratelimit reached!" }, { status: 429 });
   }
+
+  console.log(room.messages);
+
+  let history = room.messages.map((x) => x.contentFiltered);
 
   const {
     message: contentFiltered,
     usage,
     model,
-  } = await transform(room.filter.prompt, body.message, !!DEV_MODE);
+  } = await transform(room.filter, body.message, history, !!DEV_MODE);
 
   const message = await db.message.create({
     data: {
