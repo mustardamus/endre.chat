@@ -4,13 +4,14 @@ import { OPENAI_API_KEY as apiKey } from "$env/static/private";
 const configuration = new Configuration({ apiKey });
 const openai = new OpenAIApi(configuration);
 
-const systemPromptTemplate = (transformerPromt) => `
+const systemPromptTemplate = (transformerPromt) =>
+  `
 You are a text transformer programm that transforms text using transformer promts. 
 Never output anything else than the transformed text. If you can't transform the text, output the text that was input.
 Try to output the text in the language that was input if it makes sense.
 
 Transformer: ${transformerPromt}
-`;
+`.trim();
 const delay = (value, timeout) =>
   new Promise((res) => setTimeout(() => res(value), timeout));
 
