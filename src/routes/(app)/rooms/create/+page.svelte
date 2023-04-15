@@ -9,16 +9,22 @@
   import Button from "$lib/components/ui/Button.svelte";
   import RadioGroup from "$lib/components/ui/RadioGroup.svelte";
   import Avatar from "$lib/components/Avatar.svelte";
+  import ImageSelect from "$lib/components/ImageSelect.svelte";
 
   /** @type {import('./$types').PageData} */
   export let data;
 
   let filters = [];
-  let filterId;
+  let filterId = 0;
 
   $: {
     filters = data.filters.map((filter, index) => {
-      return { id: `filter-${index}`, label: filter.name, value: filter.id };
+      return {
+        id: `filter-${index}`,
+        label: filter.name,
+        value: filter.id,
+        url: `/images/${filter.name.toLowerCase()}.jpg`,
+      };
     });
   }
 
@@ -55,12 +61,14 @@
     error={$errors.roomName?.join(",")}
   />
 
-  <RadioGroup
+  <!-- <RadioGroup
     entries={filters}
     name="filterId"
     bind:value={filterId}
     error={$errors.filterId?.join(",")}
-  />
+  /> -->
+
+  <ImageSelect options={filters} bind:selected={filterId} />
 
   {#if data.currentUser?.name}
     <Avatar
