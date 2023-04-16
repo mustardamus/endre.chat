@@ -4,18 +4,19 @@
   import { invalidateAll } from "$app/navigation";
   import RoomJoin from "$lib/components/Room/Join.svelte";
   import Chat from "$lib/components/Chat/Chat.svelte";
+  import Immutable from "immutable";
 
   /** @type {import('./$types').PageData} */
   export let data;
 
   let scrollDown;
-  let messages = [];
+  let messages = Immutable.List([]);
   let unsubscribe = () => {};
 
-  $: messages = data.room.messages;
+  $: messages = Immutable.List(data.room.messages);
 
   function addOptimisticMessage(uuid, content) {
-    messages.push({
+    messages = messages.push({
       uuid,
       user: data.currentUser,
       contentOriginal: content,
@@ -26,8 +27,6 @@
       error: false,
       errorMessage: "",
     });
-
-    messages = messages;
 
     scrollDown();
   }
@@ -61,6 +60,7 @@
     const body = JSON.stringify({ uuid, message, roomId: data.room.id });
 
     addOptimisticMessage(uuid, message);
+    console.log("Test", body);
 
     const response = await fetch("/api/messages", { method: "POST", body });
     const json = await response.json();
@@ -112,7 +112,7 @@
 {#if data.isCurrentUserInRoom}
   <Chat
     room={data.room}
-    {messages}
+    messages={messages.toJS()}
     currentUser={data.currentUser}
     on:message={onMessage}
     bind:scrollDown

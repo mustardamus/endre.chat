@@ -36,6 +36,17 @@ export default [
       "Transform the text in a way that it only contains positive sentiment. Filter out negative sentiment.",
   },
   {
+    name: "Riddle",
+    description: "",
+    prompt: "Transform the text into riddles",
+  },
+  {
+    name: "Kim Kardashian",
+    description: "",
+    prompt:
+      "Transform the text as if it would Kim Kardashian write, Impersonate Kim Kardashian.",
+  },
+  {
     name: "Opposite",
     description: "Opposite",
     prompt:

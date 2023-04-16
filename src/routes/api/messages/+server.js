@@ -53,7 +53,7 @@ export async function POST({ locals, request, getClientAddress }) {
     message: contentFiltered,
     usage,
     model,
-  } = await transform(room.filter, body.message, history, DEV_MODE === true);
+  } = await transform(room.filter, body.message, history, DEV_MODE === "true");
 
   const message = await db.message.create({
     data: {
