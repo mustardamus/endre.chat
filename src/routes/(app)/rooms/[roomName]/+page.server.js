@@ -8,7 +8,12 @@ export async function load({ params, locals }) {
     include: {
       filter: true,
       admin: true,
-      messages: { include: { user: true } },
+      messages: {
+        include: { user: true },
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
       users: true,
     },
   });
@@ -19,7 +24,6 @@ export async function load({ params, locals }) {
 
   const currentUser = locals.currentUser;
   const currentUserInRoom = room.users.filter((user) => {
-    console.log(user.token, currentUser.token);
     return user.token === currentUser.token;
   });
   const isCurrentUserInRoom = currentUserInRoom.length === 1;
@@ -27,15 +31,10 @@ export async function load({ params, locals }) {
   delete currentUser.token;
   delete room.admin.token;
 
-  room.messages = room.messages
-    .map((message) => {
-      delete message.user.token;
-      return message;
-    })
-    .reduce((acc, curr) => {
-      acc[curr.id] = curr;
-      return acc;
-    }, {});
+  room.messages = room.messages.map((message) => {
+    delete message.user.token;
+    return message;
+  });
 
   room.users = room.users.map((user) => {
     delete user.token;

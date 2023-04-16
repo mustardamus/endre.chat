@@ -13,11 +13,11 @@ export default create((data = {}) => {
     enforce(data.roomId).isNotEmpty();
   });
 
-  test("id", "id is required", () => {
-    enforce(data.id).isNotEmpty();
+  test("uuid", "uuid is required", () => {
+    enforce(data.uuid).isNotEmpty();
   });
 
-  test("id", "id must be below 30 chars", () => {
-    enforce(data.id).shorterThan(30);
+  test("uuid", "uuid must be below 30 chars", () => {
+    enforce(data.uuid).shorterThan(30);
   });
 });

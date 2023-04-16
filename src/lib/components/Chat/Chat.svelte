@@ -2,22 +2,20 @@
   import { createEventDispatcher } from "svelte";
   import { onMount, onDestroy, tick } from "svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
-  import { nanoid } from "nanoid";
-  import { Map } from "immutable";
 
   export let room;
-  export let messagesById = Map({});
+  export let messages;
   export let currentUser;
+
+  const dispatch = createEventDispatcher();
 
   let messageInput;
   let subscription = null;
-  // const dispatch = createEventDispatcher();
   let message = "";
   let messagesDiv;
 
   onMount(() => {
-    messagesById = Map(room.messages);
-    subscription = subscribe();
+    // subscription = subscribe();
 
     messageInput.focus();
   });
@@ -26,19 +24,8 @@
     if (subscription) subscription();
   });
 
-  $: messages = messagesById.toList().sort((a, b) => {
-    if (a.createdAt < b.createdAt) {
-      return -1;
-    }
-    if (a.createdAt > b.createdAt) {
-      return 1;
-    }
-    if (a.createdAt === b.createdAt) {
-      return 0;
-    }
-  });
-
-  export const scrollDown = () => {
+  export const scrollDown = async () => {
+    await tick();
     messagesDiv.scrollTo({ top: 999999999, behavior: "smooth" });
   };
 
@@ -57,79 +44,19 @@
     send(event.detail.id, event.detail.contentOriginal, room.id);
   };
 
-  async function send(id, message, roomId) {
-    const body = JSON.stringify({
-      id,
-      message,
-      roomId,
-    });
-    const response = await fetch("/api/messages", { method: "POST", body });
-
-    if (response.ok) {
-      const { contentFiltered } = await response.json();
-      resolveOptimisticMessage(id, { contentFiltered });
-    } else {
-      const { error } = await response.json();
-      errorOptimisticMessage(id, error);
-    }
-  }
-
   async function onSubmit() {
-    if (!message.length) return;
-    let messageToSend = message;
-    message = "";
-    messageInput.focus();
+    if (message.length !== 0) {
+      dispatch("message", message);
 
-    let id = nanoid();
-    addOptimisticMessage(id, messageToSend);
-    await send(id, messageToSend, room.id);
-  }
-
-  async function addOptimisticMessage(id, content) {
-    messagesById = messagesById.set(id, {
-      id,
-      user: {
-        name: currentUser.name,
-        avatarSeed: currentUser.avatarSeed,
-        avatarColor: currentUser.avatarColor,
-      },
-      contentFiltered: "",
-      errorMessage: "",
-      contentOriginal: content,
-      createdAt: new Date(),
-      isOptimistic: true,
-      pending: true,
-      error: false,
-    });
-    await tick();
-    scrollDown();
+      message = "";
+      messageInput.focus();
+    }
   }
 
   async function addMessage(id, message) {
     messagesById = messagesById.set(id, message);
     await tick();
     scrollDown();
-  }
-
-  function errorOptimisticMessage(id, errorMessage) {
-    messagesById = messagesById.set(
-      id,
-      Object.assign(messagesById.get(id), {
-        error: true,
-        errorMessage,
-        pending: false,
-      })
-    );
-  }
-
-  function resolveOptimisticMessage(id, message) {
-    messagesById = messagesById.set(
-      id,
-      Object.assign(messagesById.get(id), {
-        contentFiltered: message.contentFiltered,
-        pending: false,
-      })
-    );
   }
 
   function subscribe() {
@@ -162,7 +89,7 @@
   </div>
 
   <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
-    {#each messages.toJS() as message}
+    {#each messages as message}
       <ChatMessage
         {message}
         isByCurrentUser={message.user.name === currentUser?.name}

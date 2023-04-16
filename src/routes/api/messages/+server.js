@@ -26,12 +26,10 @@ export async function GET({ url }) {
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ locals, request, getClientAddress }) {
   const body = await request.json();
-
   let validationResult = suite(body);
 
   if (!validationResult.isValid()) {
-    console.log(validationResult.getErrors());
-    throw error("Validation failed");
+    throw error(400, "Validation failed");
   }
 
   const room = await db.room.findUnique({
@@ -61,7 +59,7 @@ export async function POST({ locals, request, getClientAddress }) {
 
   const message = await db.message.create({
     data: {
-      uuid: body.id,
+      uuid: body.uuid,
       contentOriginal: body.message,
       contentFiltered,
       user: { connect: { id: locals.currentUser.id } },
