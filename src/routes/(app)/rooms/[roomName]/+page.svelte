@@ -1,4 +1,5 @@
 <script>
+  import { onMount, onDestroy } from "svelte";
   import { nanoid } from "nanoid";
   import { invalidateAll } from "$app/navigation";
   import RoomJoin from "$lib/components/Room/Join.svelte";
@@ -9,6 +10,7 @@
 
   let scrollDown;
   let messages = [];
+  let unsubscribe = () => {};
 
   $: messages = data.room.messages;
 
@@ -79,6 +81,32 @@
       data.isCurrentUserInRoom = true;
     }
   }
+
+  function subscribe() {
+    // NGINX settings:
+    // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
+
+    const sse = new EventSource(`/api/messages?roomId=${data.room.id}`);
+
+    sse.addEventListener("message", async (event) => {
+      const message = JSON.parse(event.data);
+
+      if (data.currentUser.id !== message.userId) {
+        messages.push(message);
+        messages = messages;
+      }
+    });
+
+    return () => sse.close();
+  }
+
+  onMount(() => {
+    unsubscribe = subscribe();
+  });
+
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
 {#if data.isCurrentUserInRoom}

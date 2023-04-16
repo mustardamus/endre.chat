@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { onMount, onDestroy, tick } from "svelte";
+  import { onMount, tick } from "svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
 
   export let room;
@@ -9,19 +9,12 @@
 
   const dispatch = createEventDispatcher();
 
-  let messageInput;
-  let subscription = null;
   let message = "";
+  let messageInput;
   let messagesDiv;
 
   onMount(() => {
-    // subscription = subscribe();
-
     messageInput.focus();
-  });
-
-  onDestroy(() => {
-    if (subscription) subscription();
   });
 
   export const scrollDown = async () => {
@@ -51,34 +44,6 @@
       message = "";
       messageInput.focus();
     }
-  }
-
-  async function addMessage(id, message) {
-    messagesById = messagesById.set(id, message);
-    await tick();
-    scrollDown();
-  }
-
-  function subscribe() {
-    // NGINX settings:
-    // https://stackoverflow.com/questions/46371939/sse-over-https-not-working
-    const sse = new EventSource(`/api/messages?roomId=${room.id}`);
-    sse.addEventListener("message", async (event) => {
-      const message = JSON.parse(event.data);
-
-      if (currentUser.id !== message.userId) {
-        addMessage(message.id, {
-          user: {
-            name: message.userName,
-            avatarSeed: currentUser.avatarSeed,
-            avatarColor: currentUser.avatarColor,
-          },
-          contentFiltered: message.contentFiltered,
-          createdAt: message.createdAt,
-        });
-      }
-    });
-    return () => sse.close();
   }
 </script>
 

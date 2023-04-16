@@ -47,8 +47,6 @@ export async function POST({ locals, request, getClientAddress }) {
     return json({ error: "Ratelimit reached!" }, { status: 429 });
   }
 
-  console.log(room.messages);
-
   let history = room.messages.map((x) => x.contentFiltered);
 
   const {
@@ -68,12 +66,14 @@ export async function POST({ locals, request, getClientAddress }) {
       modelUsed: model,
       ipHash,
     },
+    include: {
+      user: true,
+    },
   });
 
-  bus.emit(
-    `chat-${room.id}`,
-    Object.assign({ userName: locals.currentUser.name }, message)
-  );
+  delete message.user.token;
+
+  bus.emit(`chat-${room.id}`, message);
 
   return json(message);
 }
