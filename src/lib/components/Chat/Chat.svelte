@@ -2,7 +2,6 @@
   import { createEventDispatcher } from "svelte";
   import { onMount, onDestroy, tick } from "svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
-
   import { nanoid } from "nanoid";
   import { Map } from "immutable";
 
@@ -11,10 +10,20 @@
   export let currentUser;
 
   let messageInput;
+  let subscription = null;
+  // const dispatch = createEventDispatcher();
+  let message = "";
+  let messagesDiv;
 
   onMount(() => {
     messagesById = Map(room.messages);
+    subscription = subscribe();
+
     messageInput.focus();
+  });
+
+  onDestroy(() => {
+    if (subscription) subscription();
   });
 
   $: messages = messagesById.toList().sort((a, b) => {
@@ -47,15 +56,6 @@
 
     send(event.detail.id, event.detail.contentOriginal, room.id);
   };
-
-  // const dispatch = createEventDispatcher();
-  let message = "";
-  let messagesDiv;
-
-  // function onSubmit() {
-  //   dispatch("message", message);
-  //   message = "";
-  // }
 
   async function send(id, message, roomId) {
     const body = JSON.stringify({
@@ -106,16 +106,12 @@
   }
 
   async function addMessage(id, message) {
-    // messages.push(message);
-    // messages = messages; // triggers reactivity
     messagesById = messagesById.set(id, message);
     await tick();
     scrollDown();
   }
 
   function errorOptimisticMessage(id, errorMessage) {
-    // messages.push(message);
-    // messages = messages; // triggers reactivity
     messagesById = messagesById.set(
       id,
       Object.assign(messagesById.get(id), {
@@ -127,8 +123,6 @@
   }
 
   function resolveOptimisticMessage(id, message) {
-    // messages.push(message);
-    // messages = messages; // triggers reactivity
     messagesById = messagesById.set(
       id,
       Object.assign(messagesById.get(id), {
@@ -159,18 +153,6 @@
     });
     return () => sse.close();
   }
-
-  let subscription = null;
-
-  onMount(() => {
-    subscription = subscribe();
-  });
-
-  function unsubscribe() {
-    if (subscription) subscription();
-  }
-
-  onDestroy(unsubscribe);
 </script>
 
 <div class="h-full flex flex-col overflow-hidden">

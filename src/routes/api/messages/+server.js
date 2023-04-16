@@ -40,16 +40,8 @@ export async function POST({ locals, request, getClientAddress }) {
   });
 
   if (!room) {
-    throw error("Room not found");
+    throw error(404, "Room not found");
   }
-
-  // const checkUser = room.users.filter((user) => {
-  //   return user.token === locals.currentUser.token;
-  // });
-
-  // if (checkUser.length === 0) {
-  //   throw error("Not allowed to post in room, no member");
-  // }
 
   const ipHash = hashIpAddress(getClientAddress());
 
@@ -65,7 +57,7 @@ export async function POST({ locals, request, getClientAddress }) {
     message: contentFiltered,
     usage,
     model,
-  } = await transform(room.filter, body.message, history, !!DEV_MODE);
+  } = await transform(room.filter, body.message, history, DEV_MODE === true);
 
   const message = await db.message.create({
     data: {

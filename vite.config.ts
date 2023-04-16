@@ -3,7 +3,6 @@ import { defineConfig } from "vitest/config";
 import UnoCSS from "unocss/vite";
 import presetUno from "@unocss/preset-uno";
 import { extractorSvelte } from "@unocss/core";
-import { SvelteKitPWA } from "@vite-pwa/sveltekit";
 import presetIcons from "@unocss/preset-icons";
 
 export default defineConfig({

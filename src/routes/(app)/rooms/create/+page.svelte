@@ -7,7 +7,6 @@
   import Input from "$lib/components/ui/Input.svelte";
   import UserInfo from "$lib/components/UserInfo.svelte";
   import Button from "$lib/components/ui/Button.svelte";
-  import RadioGroup from "$lib/components/ui/RadioGroup.svelte";
   import Avatar from "$lib/components/Avatar.svelte";
   import ImageSelect from "$lib/components/ImageSelect.svelte";
 
@@ -48,9 +47,9 @@
     },
   });
 
-  // Note: Felte does not handle the radio changes, so use the setData helper
+  // Note: Felte does not handle the ImageSelect changes, so use the setData helper
   // here to update it whenever the filterId changes, which is bound on the
-  // RadioGroup component
+  // component
   $: setData("filterId", filterId);
 </script>
 
@@ -61,14 +60,13 @@
     error={$errors.roomName?.join(",")}
   />
 
-  <!-- <RadioGroup
-    entries={filters}
-    name="filterId"
-    bind:value={filterId}
-    error={$errors.filterId?.join(",")}
-  /> -->
-
   <ImageSelect options={filters} bind:selected={filterId} />
+
+  {#if $errors.filterId}
+    <div class="text-red">
+      {$errors.filterId?.join(", ")}
+    </div>
+  {/if}
 
   {#if data.currentUser?.name}
     <Avatar
