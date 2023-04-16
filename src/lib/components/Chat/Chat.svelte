@@ -3,10 +3,11 @@
   import { onMount, onDestroy, tick } from "svelte";
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import { nanoid } from "nanoid";
-  import { Map } from "immutable";
+  import { Map, List } from "immutable";
 
   export let room;
   export let messagesById = Map({});
+  export let joinedEvents = List([]);
   export let currentUser;
 
   let messageInput;
@@ -26,17 +27,21 @@
     if (subscription) subscription();
   });
 
-  $: messages = messagesById.toList().sort((a, b) => {
-    if (a.createdAt < b.createdAt) {
-      return -1;
-    }
-    if (a.createdAt > b.createdAt) {
-      return 1;
-    }
-    if (a.createdAt === b.createdAt) {
-      return 0;
-    }
-  });
+  $: messages = messagesById
+    .toList()
+    .map((x) => Object.assign(x, { type: "message" }))
+    .concat(joinedEvents.map((x) => Object.assign(x, { type: "joined" })))
+    .sort((a, b) => {
+      if (a.createdAt < b.createdAt) {
+        return -1;
+      }
+      if (a.createdAt > b.createdAt) {
+        return 1;
+      }
+      if (a.createdAt === b.createdAt) {
+        return 0;
+      }
+    });
 
   export const scrollDown = () => {
     messagesDiv.scrollTo({ top: 999999999, behavior: "smooth" });
@@ -111,6 +116,15 @@
     scrollDown();
   }
 
+  function addJoinEvent(username) {
+    joinedEvents = joinedEvents.push({
+      createdAt: new Date(),
+      user: {
+        name: username,
+      },
+    });
+  }
+
   function errorOptimisticMessage(id, errorMessage) {
     messagesById = messagesById.set(
       id,
@@ -139,16 +153,22 @@
     sse.addEventListener("message", async (event) => {
       const message = JSON.parse(event.data);
 
+      console.log("message", message);
+
       if (currentUser.id !== message.userId) {
-        addMessage(message.id, {
-          user: {
-            name: message.userName,
-            avatarSeed: currentUser.avatarSeed,
-            avatarColor: currentUser.avatarColor,
-          },
-          contentFiltered: message.contentFiltered,
-          createdAt: message.createdAt,
-        });
+        if (message.type === "message") {
+          addMessage(message.id, {
+            user: {
+              name: message.userName,
+              avatarSeed: currentUser.avatarSeed,
+              avatarColor: currentUser.avatarColor,
+            },
+            contentFiltered: message.contentFiltered,
+            createdAt: message.createdAt,
+          });
+        } else if (message.type === "joined") {
+          addJoinEvent(message.userName);
+        }
       }
     });
     return () => sse.close();
@@ -163,11 +183,15 @@
 
   <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
     {#each messages.toJS() as message}
-      <ChatMessage
-        {message}
-        isByCurrentUser={message.user.name === currentUser?.name}
-        on:resend={handleResend}
-      />
+      {#if message.type === "message"}
+        <ChatMessage
+          {message}
+          isByCurrentUser={message.user.name === currentUser?.name}
+          on:resend={handleResend}
+        />
+      {:else if message.type === "joined"}
+        <div class="mx-2">{message.user.name} joined</div>
+      {/if}
     {/each}
   </div>
 

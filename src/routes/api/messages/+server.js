@@ -74,7 +74,10 @@ export async function POST({ locals, request, getClientAddress }) {
 
   bus.emit(
     `chat-${room.id}`,
-    Object.assign({ userName: locals.currentUser.name }, message)
+    Object.assign(
+      { type: "message", userName: locals.currentUser.name },
+      message
+    )
   );
 
   return json(message);

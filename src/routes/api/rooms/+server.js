@@ -1,6 +1,7 @@
 import db from "$lib/db";
 import { json, error } from "@sveltejs/kit";
 import { createRoom, joinRoom } from "$lib/validations/room.js";
+import { bus } from "$lib/bus";
 
 async function ensureUserName(fetch, locals, userName) {
   if (locals.currentUser.name === null && userName) {
@@ -62,6 +63,14 @@ export async function PUT({ locals, request, fetch }) {
   if (!room) {
     throw error(404, "Room not found");
   }
+
+  bus.emit(
+    `chat-${room.id}`,
+    Object.assign({
+      type: "joined",
+      userName: body?.userName || locals.currentUser.name,
+    })
+  );
 
   return json({ success: true });
 }
