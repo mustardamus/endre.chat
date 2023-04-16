@@ -55,11 +55,15 @@
 
   <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
     {#each messages as message}
-      <ChatMessage
-        {message}
-        isByCurrentUser={message.user.name === currentUser?.name}
-        on:resend={handleResend}
-      />
+      {#if message.type === "joined"}
+        <div class="mx-2">{message.userName} joined</div>
+      {:else}
+        <ChatMessage
+          {message}
+          isByCurrentUser={message.user.name === currentUser?.name}
+          on:resend={handleResend}
+        />
+      {/if}
     {/each}
   </div>
 

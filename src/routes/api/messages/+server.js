@@ -73,7 +73,7 @@ export async function POST({ locals, request, getClientAddress }) {
 
   delete message.user.token;
 
-  bus.emit(`chat-${room.id}`, message);
+  bus.emit(`chat-${room.id}`, { ...message, type: "message" });
 
   return json(message);
 }

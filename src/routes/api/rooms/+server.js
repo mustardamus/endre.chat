@@ -1,5 +1,6 @@
-import db from "$lib/db";
 import { json, error } from "@sveltejs/kit";
+import db from "$lib/db";
+import { bus } from "$lib/bus";
 import { createRoom, joinRoom } from "$lib/validations/room.js";
 
 async function ensureUserName(fetch, locals, userName) {
@@ -45,8 +46,9 @@ export async function POST({ locals, request, fetch }) {
 /** @type {import('./$types').RequestHandler} */
 export async function PUT({ locals, request, fetch }) {
   const body = await request.json();
+  const userName = body?.userName || locals.currentUser.name;
 
-  await ensureUserName(fetch, locals, body?.userName);
+  await ensureUserName(fetch, locals, userName);
 
   if (!joinRoom(body).isValid()) {
     throw error(400, "Validation failed");
@@ -62,6 +64,8 @@ export async function PUT({ locals, request, fetch }) {
   if (!room) {
     throw error(404, "Room not found");
   }
+
+  bus.emit(`chat-${room.id}`, { type: "joined", userName });
 
   return json({ success: true });
 }
