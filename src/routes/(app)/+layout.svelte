@@ -21,5 +21,7 @@
     height: calc(
       100vh - calc(100vh - 100%)
     ); /* https://stackoverflow.com/a/60735432 */
+    background: #111;
+    color: #ffffff;
   }
 </style>

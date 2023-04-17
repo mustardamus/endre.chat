@@ -29,10 +29,7 @@
 
 <header
   class="
-    border-b shadow-lg border-b-1 border-slate-200 bg-white/90
-    shadow-slate-700/5
-
-    after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm
+    bg-dark-600 after:bg-dark-600 lg:backdrop-blur-sm
 
     relative z-20 w-full after:absolute after:top-full after:left-0
     after:z-10 after:block after:h-px after:w-full lg:after:hidden
@@ -48,7 +45,6 @@
       aria-label="main navigation"
       class={`
         flex h-[${height}] items-stretch justify-between font-medium
-        text-slate-700
       `}
     >
       <a
@@ -152,26 +148,6 @@
 
       {#if currentUser}
         <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
-          <a
-            href="/profile"
-            class="
-              relative inline-flex items-center justify-center
-              text-white rounded-full 
-            "
-          >
-            <Avatar
-              seed={currentUser.avatarSeed}
-              color={currentUser.avatarColor}
-              size="28"
-              strokeWidth="0"
-            />
-            {#if currentUser.name?.length ?? 0 !== 0}
-              <span class="text-gray-500 pl-2">Hi, </span>
-              <span class="text-gray-600">{currentUser.name}</span>
-              <span class="text-gray-500">!</span>
-            {/if}
-          </a>
-
           <Button class="ml-5" on:click={() => goto("/rooms/create")}>
             Create Room
           </Button>

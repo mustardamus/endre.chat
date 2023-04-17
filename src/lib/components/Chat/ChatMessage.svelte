@@ -38,7 +38,7 @@
 
   <div class="flex-grow">
     <div
-      class="bg-gray-200 px-7 py-5 rounded mx-7 shadow-lg"
+      class="bg-[#4169E1] px-7 py-5 rounded mx-7 shadow-lg"
       class:opacity-50={message.error || message.pending}
     >
       {#if message.isOptimistic && !animationDone}

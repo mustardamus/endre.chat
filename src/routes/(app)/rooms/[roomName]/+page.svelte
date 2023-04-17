@@ -1,10 +1,10 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import Immutable from "immutable";
   import { nanoid } from "nanoid";
   import { invalidateAll } from "$app/navigation";
   import RoomJoin from "$lib/components/Room/Join.svelte";
   import Chat from "$lib/components/Chat/Chat.svelte";
-  import Immutable from "immutable";
 
   /** @type {import('./$types').PageData} */
   export let data;

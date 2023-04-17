@@ -3,6 +3,9 @@
   import { browser } from "$app/environment";
   import * as blobs2 from "blobs/v2";
 
+  let className = "";
+  export { className as class };
+
   export let canEdit = false;
   export let seed = 1;
   export let color = "red";
@@ -44,6 +47,6 @@
   }
 </script>
 
-<div on:click={onAvatarClick} on:keyup={onAvatarClick}>
+<div class={className} on:click={onAvatarClick} on:keyup={onAvatarClick}>
   {@html avatarSvg}
 </div>
