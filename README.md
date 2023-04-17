@@ -1,5 +1,11 @@
 # endre.chat
 
+![demo](./demo.gif)
+
+## [Demo](https://endre.chat/)
+
+---
+
 ## Developing
 
 ```bash
