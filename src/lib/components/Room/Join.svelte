@@ -26,7 +26,7 @@
   });
 </script>
 
-<form use:form class="container mx-auto pt-16 h-full overflow-auto">
+<form use:form class="container mx-auto pt-16 h-full overflow-auto px-6">
   <div class="text-center mb-12">
     <span class="block text-6xl">{room.name}</span>
     <span class="block text-gray-600 text-3xl">{room.filter.name}</span>

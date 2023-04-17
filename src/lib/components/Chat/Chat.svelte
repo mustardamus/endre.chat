@@ -102,7 +102,7 @@
     />
 
     <button
-      class="h-full block bg-action px-10 color-white cursor-pointer ml-5px"
+      class="h-full block bg-funky px-10 color-gray-900 font-bold cursor-pointer ml-5px"
     >
       Send
     </button>
