@@ -74,29 +74,33 @@
       <!-- for validation to work -->
       <input type="hidden" value={data.currentUser.name} name="userName" />
 
-      <Button class="w-full text-4xl py-5 relative">
+      <Button class="w-full text-3xl py-4 relative">
         <div class="absolute -top-32px -left-10px">
           <Avatar
             seed={data.currentUser.avatarSeed}
             color={data.currentUser.avatarColor}
             size="160"
             strokeWidth="1"
+            class="z-2"
           />
         </div>
 
-        <ScrambleText
-          originalText={`Create as ${data.currentUser.name}`}
-          targetText={`Create as ${data.currentUser.name}`}
-        />
+        <div class="relative z-1 shadow">
+          <ScrambleText
+            originalText={`Create as ${data.currentUser.name}`}
+            targetText={`Create as ${data.currentUser.name}`}
+          />
+        </div>
       </Button>
     {:else}
       <UserInfo
         name={data.currentUser?.name}
         seed={data.currentUser?.avatarSeed}
+        color={data.currentUser?.avatarColor}
         errors={$errors}
       />
 
-      <Button class="w-full text-4xl py-5">
+      <Button class="w-full text-4xl py-5 mt-12">
         <ScrambleText originalText="Create" targetText="Create" />
       </Button>
     {/if}
