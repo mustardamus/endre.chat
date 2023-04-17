@@ -9,6 +9,7 @@
   import Button from "$lib/components/ui/Button.svelte";
   import Avatar from "$lib/components/Avatar.svelte";
   import ImageSelect from "$lib/components/ImageSelect.svelte";
+  import ScrambleText from "$lib/components/ScrambleText.svelte";
 
   /** @type {import('./$types').PageData} */
   export let data;
@@ -53,7 +54,7 @@
   $: setData("filterId", filterId);
 </script>
 
-<form use:form>
+<form use:form class="container mx-auto p-5 h-full overflow-scroll">
   <Input
     label="Room Name"
     name="roomName"
@@ -68,22 +69,36 @@
     </div>
   {/if}
 
-  {#if data.currentUser?.name}
-    <Avatar
-      seed={data.currentUser.avatarSeed}
-      color={data.currentUser.avatarColor}
-    />
-    Create as {data.currentUser.name}
+  <div class="my-9">
+    {#if data.currentUser?.name}
+      <!-- for validation to work -->
+      <input type="hidden" value={data.currentUser.name} name="userName" />
 
-    <!-- for validation to work -->
-    <input type="hidden" value={data.currentUser.name} name="userName" />
-  {:else}
-    <UserInfo
-      name={data.currentUser?.name}
-      seed={data.currentUser?.avatarSeed}
-      errors={$errors}
-    />
-  {/if}
+      <Button class="w-full text-4xl py-5 relative">
+        <div class="absolute -top-32px -left-10px">
+          <Avatar
+            seed={data.currentUser.avatarSeed}
+            color={data.currentUser.avatarColor}
+            size="160"
+            strokeWidth="1"
+          />
+        </div>
 
-  <Button>Create</Button>
+        <ScrambleText
+          originalText={`Create as ${data.currentUser.name}`}
+          targetText={`Create as ${data.currentUser.name}`}
+        />
+      </Button>
+    {:else}
+      <UserInfo
+        name={data.currentUser?.name}
+        seed={data.currentUser?.avatarSeed}
+        errors={$errors}
+      />
+
+      <Button class="w-full text-4xl py-5">
+        <ScrambleText originalText="Create" targetText="Create" />
+      </Button>
+    {/if}
+  </div>
 </form>

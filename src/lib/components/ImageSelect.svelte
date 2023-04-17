@@ -12,15 +12,16 @@
 <div class="my-grid">
   {#each options as option (option.id)}
     <div
-      class="flex justify-center items-center bg-gray-300 border-emerald-500 cursor-pointer"
+      class="flex justify-center items-center bg-black border-[#B22222] cursor-pointer"
       style="background-image: url({option.url});"
       class:border-4={option.value === selected}
       on:click={() => (selected = option.value)}
     >
       <div
-        class="font-bold"
+        class="shadow"
         class:color-white={option.value != selected}
-        class:color-emerald-500={option.value === selected}
+        class:text-action={option.value === selected}
+        class:font-bold={option.value === selected}
       >
         {option.label}
       </div>

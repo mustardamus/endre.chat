@@ -34,13 +34,19 @@ export default {
         background: "#B22222",
       },
     ],
+    [
+      "text-action",
+      {
+        color: "#B22222",
+      },
+    ],
   ],
 
   shortcuts: {
     btn: "bg-action border-none m-0 px-30px py-8px text-white text-14px rounded-3px text-shadow hover:bg-action cursor-pointer transition-all duration-100",
     "page-title": "text-funky text-6 font-bold",
     input:
-      "py-1px px-10px bg-[#242424] border border-black rounded-lg shadow-sm shadow-black/30 block w-full text-[#eee] text-14px focus:border-[#0095f6] focus:outline-none",
+      "p-5 bg-dark rounded-lg shadow-sm shadow-black/30 block w-full text-white text-2xl focus:border-[#0095f6] focus:outline-none",
     label: "text-[#eee] shadow block text-left mb-4px cursor-pointer",
   },
 };

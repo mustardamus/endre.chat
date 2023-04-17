@@ -11,17 +11,20 @@
   // note: can't `bind:value` with dynamic `type`, that's why multiple `<input>`
 
   const inputClass = `
-    relative w-full h-10 px-4 pl-12 text-sm placeholder-transparent
-    transition-all border rounded outline-none focus-visible:outline-none
-    peer border-slate-200 text-slate-500 autofill:bg-white
-    invalid:border-pink-500 invalid:text-pink-500 focus:border-emerald-500
-    focus:outline-none disabled:cursor-not-allowed disabled:bg-slate-50
-    disabled:text-slate-400
-    group-[.invalid]:border-pink-500
+    input
   `;
 </script>
 
 <div class={`group relative my-6 ${className}`} class:invalid={error?.length}>
+  <!-- <label
+    for={name}
+    class="
+      
+    "
+  >
+    {label}
+  </label> -->
+
   {#if type === "text"}
     <input
       {name}
@@ -53,37 +56,6 @@
       on:keyup
     />
   {/if}
-
-  <label
-    for={name}
-    class="
-        cursor-text text-xs px-2 transition-all -top-2 left-2
-        text-slate-400 z-[1] absolute
-        before:bg-white before:h-full before:w-full
-        before:transition-all before:top-0 before:left-0
-        before:z-[-1] before:absolute before:block '\00a0*']
-        peer-placeholder-shown:text-sm
-        peer-placeholder-shown:top-2.5
-        peer-placeholder-shown:bg-transparent
-        peer-placeholder-shown:left-10
-        peer-required:after:text-pink-500
-        peer-focus:left-2
-        peer-focus:cursor-default
-        peer-focus:-top-2
-        peer-focus:text-xs
-        peer-focus:text-emerald-500
-        peer-focus:bg-white
-        peer-disabled:cursor-not-allowed
-        peer-disabled:text-slate-400
-        peer-disabled:before:bg-transparent
-        peer-invalid:text-pink-500
-        group-[.invalid]:text-pink-500
-        group-[.invalid]:peer-focus:text-pink-500
-        group-[.invalid]:bg-white
-      "
-  >
-    {label}
-  </label>
 
   <!-- <svg
     xmlns="http://www.w3.org/2000/svg"

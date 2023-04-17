@@ -9,10 +9,10 @@
 </script>
 
 <div class="flex">
-  <div class="cursor-pointer">
+  <div class="cursor-pointer w-[128px]">
     <Avatar {seed} {color} canEdit={true} />
 
-    <div class="text-center text-sm text-gray-400">
+    <div class="text-center text-sm text-gray-500">
       Click to regenerate avatar
     </div>
   </div>
