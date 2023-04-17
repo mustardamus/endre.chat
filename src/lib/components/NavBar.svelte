@@ -37,7 +37,7 @@
 >
   <div
     class="
-      relative mx-auto max-w-full px-6
+      relative mx-auto max-w-full 
       lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]
     "
   >
@@ -54,7 +54,7 @@
         on:click={() => (isMenuActive = false)}
         class="
           flex items-center gap-2 py-3 text-lg whitespace-nowrap
-          focus:outline-none lg:flex-1
+          focus:outline-none lg:flex-1 pl-5
         "
       >
         <ScrambleText originalText={brand} targetText={brand} />
