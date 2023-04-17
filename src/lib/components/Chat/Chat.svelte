@@ -7,6 +7,7 @@
   export let room;
   export let messages;
   export let currentUser;
+  export let userCount = 0;
 
   const dispatch = createEventDispatcher();
 
@@ -67,9 +68,7 @@
 
     <div class="flex-grow text-right">
       <span class="text-gray-500">{room?.filter.name}</span>
-      <span class="pl-5"
-        >{room?.name} (<strong>{room?.users.length}</strong>)</span
-      >
+      <span class="pl-5">{room?.name} (<strong>{userCount}</strong>)</span>
     </div>
   </div>
 
