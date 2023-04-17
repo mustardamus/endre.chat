@@ -12,8 +12,10 @@
   let scrollDown;
   let messages = Immutable.List([]);
   let unsubscribe = () => {};
+  let userCount = 0;
 
   $: messages = Immutable.List(data.room?.messages || []);
+  $: userCount = data.room?.users.length;
 
   function addMessage(message) {
     messages = messages.push(message);
@@ -114,6 +116,10 @@
       if (data.currentUser.id !== message.userId) {
         addMessage(message);
       }
+
+      if (message.type == "joined") {
+        userCount += 1;
+      }
     });
 
     return () => sse.close();
@@ -133,6 +139,7 @@
     room={data.room}
     messages={messages.toJS()}
     currentUser={data.currentUser}
+    {userCount}
     on:message={onMessage}
     on:resend={onResend}
     bind:scrollDown
