@@ -113,8 +113,17 @@
 </div>
 
 <style>
-  .custom-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: grey;
+  .custom-scroll::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+  }
+
+  .custom-scroll::-webkit-scrollbar-track {
+    background: black; /* color of the tracking area */
+  }
+
+  .custom-scroll::-webkit-scrollbar-thumb {
+    border-radius: 20px; /* roundness of the scroll thumb */
+    background-color: orange; /* color of the scroll thumb */
+    border: 3px solid black; /* creates padding around scroll thumb */
   }
 </style>
