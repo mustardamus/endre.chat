@@ -13,12 +13,15 @@
   let messages = Immutable.List([]);
   let unsubscribe = () => {};
 
-  onMount(() => {
-    messages = Immutable.List(data.room.messages);
-  });
+  $: messages = Immutable.List(data.room?.messages || []);
+
+  function addMessage(message) {
+    messages = messages.push(message);
+    scrollDown();
+  }
 
   function addOptimisticMessage(uuid, content) {
-    messages = messages.push({
+    addMessage({
       uuid,
       user: data.currentUser,
       contentOriginal: content,
@@ -29,8 +32,6 @@
       error: false,
       errorMessage: "",
     });
-
-    scrollDown();
   }
 
   function resolveOptimisticMessage(uuid, contentFiltered) {
@@ -62,7 +63,6 @@
     const body = JSON.stringify({ uuid, message, roomId: data.room.id });
 
     addOptimisticMessage(uuid, message);
-    console.log("Test", body);
 
     const response = await fetch("/api/messages", { method: "POST", body });
     const json = await response.json();
@@ -94,8 +94,7 @@
       const message = JSON.parse(event.data);
 
       if (data.currentUser.id !== message.userId) {
-        messages.push(message);
-        messages = messages;
+        addMessage(message);
       }
     });
 
