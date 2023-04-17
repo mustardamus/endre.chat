@@ -9,16 +9,13 @@ export default [
     description: "5p34k l1k3 th3 31337 h4X0r5",
     prompt: "Turn the following text into 1337-speak:",
   },
-  {
-    name: "English",
-    description: "Translate all languages to english",
-    prompt: "Translate the following text in modern english:",
-  },
-  {
-    name: "Bavarian",
-    description: "Translate all languages to german with bavarian slang",
-    prompt: "Translate the following text to german with bavarian slang:",
-  },
+
+  // {
+  //   name: "Bavarian",
+  //   description: "Translate all languages to german with bavarian slang",
+  //   prompt:
+  //     "Create a new language from a mix of bavarian and english called bavarian english Give me an example text written in that language:",
+  // },
   {
     name: "🔠🔄➡️😀",
     description: "Translates text to emojis",
@@ -30,21 +27,10 @@ export default [
     prompt: "Translate to medival polite language.",
   },
   {
-    name: "Positive",
+    name: "False-Positive",
     description: "Think positive",
     prompt:
       "Transform the text in a way that it only contains positive sentiment. Filter out negative sentiment.",
-  },
-  {
-    name: "Riddle",
-    description: "",
-    prompt: "Transform the text into riddles",
-  },
-  {
-    name: "Kim Kardashian",
-    description: "",
-    prompt:
-      "Transform the text as if it would Kim Kardashian write, Impersonate Kim Kardashian.",
   },
   {
     name: "Opposite",
@@ -52,23 +38,29 @@ export default [
     prompt:
       "Transform the text in a way that it mens the opposite. Avoid negativity and harrasment in the output.",
   },
+  // {
+  //   name: "Marvin",
+  //   description: "Marvin the paranoid android",
+  //   prompt:
+  //     "Transform the text like if Marvin the paranoid android would say it.",
+  // },
+  // {
+  //   name: "Sports commentator",
+  //   description: "",
+  //   prompt:
+  //     "Do not transform the text, but add a comment to the message in the style of an tv sports commentator at the end of the message, seperated by - ",
+  // },
   {
-    name: "Marvin",
-    description: "Marvin the paranoid android",
-    prompt:
-      "Transform the text like if Marvin the paranoid android would say it.",
-  },
-  {
-    name: "Sports commentator",
+    name: "Asshole",
     description: "",
     prompt:
-      "Do not transform the text, but add a comment to the message in the style of an tv sports commentator at the end of the message, seperated by - ",
+      "Do not transform the text, but add a comment of someone who annoyingly butts in and has something to say about the message, complains about gramar or typos, and then shows the correct way to build the sentence, seperated by - ",
   },
   {
-    name: "Comments",
+    name: "DaDa",
     description: "",
     prompt:
-      "Do not transform the text, but add a comment of someone who annoyingly butts in and has something to say about the message, complains about gramar or typos, seperated by - ",
+      "All the dada literatur that you have access to, and spit out a rhyming but random gibberish, alternate between writting big and small, and use many spaces",
   },
 
   // {
