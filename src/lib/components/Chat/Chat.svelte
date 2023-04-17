@@ -14,6 +14,7 @@
   let message = "";
   let messageInput;
   let messagesDiv;
+  let roomInput;
 
   onMount(() => {
     messageInput.focus();
@@ -41,13 +42,13 @@
 </script>
 
 <div class="h-full flex flex-col overflow-hidden bg-dark-500">
-  <div class="flex py-3 px-6 bg-dark-800 text-sm">
-    <div class="">
+  <div class="flex px-6px py-1 bg-dark-800 text-sm">
+    <div class="pt-2">
       <a
         href="/profile"
         class="
       relative inline-flex items-center justify-center
-      text-white rounded-full 
+      text-white rounded-full
       "
       >
         <Avatar
@@ -68,7 +69,19 @@
 
     <div class="flex-grow text-right">
       <span class="text-gray-500">{room?.filter.name}</span>
-      <span class="pl-5">{room?.name} (<strong>{userCount}</strong>)</span>
+      <strong>{userCount}</strong>
+      <input
+        class="room-url cursor-pointer bg-black/20 min-w-1/2 text-center input text-sm py-2 w-auto inline-block ml-3 
+        "
+        bind:this={roomInput}
+        value={`https://endre.chat/rooms/${room?.name}`}
+        on:focus={() => {
+          roomInput.select();
+        }}
+        on:click={() => {
+          roomInput.select();
+        }}
+      />
     </div>
   </div>
 
@@ -79,7 +92,7 @@
     <div class="container mx-auto mb-8">
       {#each messages as message}
         {#if message.type === "joined"}
-          <div class="mx-2">{message.userName} joined</div>
+          <div class="p-7 text-gray-800">{message.userName} joined</div>
         {:else}
           <ChatMessage
             {message}
@@ -125,5 +138,10 @@
     border-radius: 20px; /* roundness of the scroll thumb */
     background-color: orange; /* color of the scroll thumb */
     border: 3px solid black; /* creates padding around scroll thumb */
+  }
+
+  .room-url::selection {
+    color: black;
+    background: #888;
   }
 </style>
