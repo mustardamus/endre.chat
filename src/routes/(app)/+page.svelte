@@ -12,7 +12,7 @@
   });
 </script>
 
-<div class="flex flex-col items-center  h-screen">
+<div class="flex flex-col items-center h-full overflow-auto pb-6">
   <div class="text-7xl font-extrabold my-30">
     <ScrambleText originalText={""} targetText={"endre.chat"} />
   </div>

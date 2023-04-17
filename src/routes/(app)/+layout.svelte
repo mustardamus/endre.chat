@@ -13,7 +13,7 @@
 </script>
 
 <div class="h-full flex flex-col overflow-hidden">
-  {#if $page.path != "/"}
+  {#if $page.url.pathname !== "/"}
     <NavBar height="2rem" brand="endre.chat" currentUser={data.currentUser} />
   {/if}
   <div class="flex-grow overflow-hidden">

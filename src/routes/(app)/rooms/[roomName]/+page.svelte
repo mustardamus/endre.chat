@@ -9,12 +9,15 @@
   /** @type {import('./$types').PageData} */
   export let data;
 
-  let scrollDown;
+  let scrollDown = () => {};
   let messages = Immutable.List([]);
   let unsubscribe = () => {};
   let userCount = 0;
 
-  $: messages = Immutable.List(data.room?.messages || []);
+  $: {
+    messages = Immutable.List(data.room?.messages || []);
+    scrollDown();
+  }
   $: userCount = data.room?.users.length;
 
   function addMessage(message) {

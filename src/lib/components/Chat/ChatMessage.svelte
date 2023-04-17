@@ -42,7 +42,7 @@
     />
   </div>
 
-  <div class="flex-grow">
+  <div class="w-full flex-grow overflow-y-hidden">
     <div
       class="bg-dark-900 px-7 py-5 rounded mx-6 shadow-lg"
       class:opacity-50={message.error || message.pending}
