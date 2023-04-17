@@ -1,10 +1,22 @@
 # endre.chat
 
-Welcome to endre.chat! Our submission for the SvelteHack hackathon is a fun and engaging chat web application with a twist. Instead of sending plain, boring messages, endre.chat transforms the messages into something more exciting before they are sent. Get ready to experience a whole new level of chatting with your friends and colleagues!
+Welcome to endre.chat, our submission for the SvelteHack hackathon! We're excited to introduce our fun and engaging chat web application with a twist. Using the power of GPT-4 AI, we transform messages before they're sent, creating a unique and entertaining chatting experience.
 
 ![demo](./demo.gif)
 
 ## [Demo](https://endre.chat/)
+
+## Features
+
+- Real-time chatting with other users
+- AI-assisted message transformation using GPT-4
+  Fun and engaging chat themes
+- Mobile-friendly design
+- Built with Svelte for a sleek and fast user experience
+
+## How It Works
+
+When you send a message with endre.chat, our system processes your message using GPT-4 AI. The AI then transforms your message, adding its own creative twist while still retaining the original meaning. This transformed message is what gets sent to the chat room, creating a fun and engaging experience for all users.
 
 ---
 
