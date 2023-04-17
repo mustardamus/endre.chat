@@ -20,9 +20,9 @@ When you send a message with endre.chat, our system processes your message using
 
 ---
 
-### Development
+## Development
 
-## Configuration
+### Configuration
 
 Configuration needs to be passed in via environment variables.
 You can use the provided [.env-example](./.env-example) file as a starting point.
@@ -39,7 +39,7 @@ To start the development server, run:
 npm run dev
 ```
 
-## Building
+### Building
 
 To create a production build of your app, run:
 
@@ -49,7 +49,7 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-## Database Setup
+### Database Setup
 
 To migrate the database schema and seed the database from `prisma/seed.js`, run:
 
@@ -59,7 +59,7 @@ npm run db:migrate
 
 Run the above command whenever you add a new model schema to `prisma/schema.prisma`.
 
-## NixOS shenanigans
+### NixOS shenanigans
 
 - Use minimal shell.nix
 - Use specific Prisma version https://github.com/prisma/prisma/issues/17070#issuecomment-1468642092
