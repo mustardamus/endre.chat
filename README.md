@@ -20,9 +20,9 @@ When you send a message with endre.chat, our system processes your message using
 
 ---
 
-## Developing
+### Development
 
-### Configuration
+## Configuration
 
 Configuration needs to be passed in via environment variables.
 You can use the provided [.env-example](./.env-example) file as a starting point.
