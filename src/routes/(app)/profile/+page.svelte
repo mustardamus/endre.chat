@@ -1,10 +1,11 @@
 <script>
   import { createForm } from "felte";
   import { validator } from "@felte/validator-vest";
-  import { invalidateAll, goto } from "$app/navigation";
+  import { invalidateAll } from "$app/navigation";
   import suite from "$lib/validations/user.js";
   import UserInfo from "$lib/components/UserInfo.svelte";
   import Button from "$lib/components/ui/Button.svelte";
+  import ScrambleText from "$lib/components/ScrambleText.svelte";
 
   /** @type {import('./$types').PageData} */
   export let data;
@@ -24,13 +25,13 @@
 
       if (response.ok) {
         await invalidateAll();
-        goto("/");
+        history.back();
       }
     },
   });
 </script>
 
-<form use:form>
+<form use:form class="container mx-auto p-5 h-full overflow-auto">
   <UserInfo
     name={data.currentUser?.name}
     seed={data.currentUser?.avatarSeed}
@@ -39,7 +40,9 @@
   />
 
   <div class="flex pt-6">
-    <Button>Save</Button>
+    <Button class="w-full text-4xl py-5 mt-12">
+      <ScrambleText originalText="Save" targetText="Save" />
+    </Button>
   </div>
 </form>
 
