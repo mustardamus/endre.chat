@@ -8,13 +8,26 @@
 
 ## Developing
 
+### Configuration
+
+Configuration needs to be passed in via environment variables.
+You can use the provided [.env-example](./.env-example) file as a starting point.
+
+| Environment Variable | Description               |
+| -------------------- | ------------------------- |
+| SESSION_SECRET       | Key for cookie encryption |
+| DATABASE_URL         | Prisma database URL       |
+| OPENAI_API_KEY       | OpenAI API Key            |
+
+To start the development server, run:
+
 ```bash
 npm run dev
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production build of your app, run:
 
 ```bash
 npm run build
@@ -22,15 +35,15 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-## Database setup
+## Database Setup
 
-Migrate db schema and seed database from `prisma/seed.js`
+To migrate the database schema and seed the database from `prisma/seed.js`, run:
 
 ```
 npm run db:migrate
 ```
 
-Run the above command as well, when adding a new model schema to `prisma/schema.prisma`.
+Run the above command whenever you add a new model schema to `prisma/schema.prisma`.
 
 ## NixOS shenanigans
 
