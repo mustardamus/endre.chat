@@ -54,7 +54,7 @@
   $: setData("filterId", filterId);
 </script>
 
-<form use:form class="container mx-auto p-5 h-full overflow-scroll">
+<form use:form class="container mx-auto p-5 h-full overflow-auto">
   <Input
     label="Room Name"
     name="roomName"
