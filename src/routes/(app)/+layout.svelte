@@ -1,16 +1,19 @@
 <script>
   import NavBar from "$lib/components/NavBar.svelte";
   import { page } from "$app/stores";
+  import { onMount } from "svelte";
 
   // note: `overflow-hidden` is there multiple times to make the inside of a
   // `flex-grow` scrollable (ie chat messages)
 
   /** @type {import('./$types').PageData} */
   export let data;
+
+  onMount(() => console.log($page.path));
 </script>
 
 <div class="h-full flex flex-col overflow-hidden">
-  {#if page.path === "/"}
+  {#if $page.path != "/"}
     <NavBar height="2rem" brand="endre.chat" currentUser={data.currentUser} />
   {/if}
   <div class="flex-grow overflow-hidden">

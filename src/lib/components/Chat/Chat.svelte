@@ -72,7 +72,10 @@
     </div>
   </div>
 
-  <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
+  <div
+    class="custom-scroll flex-grow overflow-x-hidden overflow-y-scroll"
+    bind:this={messagesDiv}
+  >
     <div class="container mx-auto mb-8">
       {#each messages as message}
         {#if message.type === "joined"}
@@ -108,3 +111,10 @@
     </button>
   </form>
 </div>
+
+<style>
+  .custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: grey;
+  }
+</style>
