@@ -4,7 +4,7 @@ Welcome to endre.chat, our submission for the SvelteHack hackathon! We're excite
 
 ![demo](./demo.gif)
 
-## [Demo](https://endre.chat/)
+### [Demo](https://endre.chat/)
 
 ## Features
 
@@ -17,8 +17,6 @@ Welcome to endre.chat, our submission for the SvelteHack hackathon! We're excite
 ## How It Works
 
 When you send a message with endre.chat, our system processes your message using GPT-4 AI. The AI then transforms your message, adding its own creative twist while still retaining the original meaning. This transformed message is what gets sent to the chat room, creating a fun and engaging experience for all users.
-
----
 
 ## Development
 
