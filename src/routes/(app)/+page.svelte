@@ -19,6 +19,7 @@
   <div>
     <Button class="" on:click={() => goto("/rooms/create")}>Create Room</Button>
   </div>
+
   {#if data.rooms?.length}
     <h1 class="text-4xl font-extrabold mb-4 mt-10">Rooms</h1>
     <div
