@@ -1,6 +1,6 @@
 # endre.chat
 
-Welcome to endre.chat, our submission for the SvelteHack hackathon! We're excited to introduce our fun and engaging chat web application with a twist. Using the power of GPT-4 AI, we transform messages before they're sent, creating a unique and entertaining chatting experience.
+Welcome to endre.chat, our submission for the SvelteHack hackathon! We're excited to introduce our fun and engaging chat web application with a twist. Using the power of OpenAI's GPT-4 language model, we transform messages before they're sent, creating a unique and entertaining chatting experience.
 
 ![demo](./demo.gif)
 
