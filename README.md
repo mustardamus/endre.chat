@@ -1,5 +1,7 @@
 # endre.chat
 
+Welcome to endre.chat! Our submission for the SvelteHack hackathon is a fun and engaging chat web application with a twist. Instead of sending plain, boring messages, endre.chat transforms the messages into something more exciting before they are sent. Get ready to experience a whole new level of chatting with your friends and colleagues!
+
 ![demo](./demo.gif)
 
 ## [Demo](https://endre.chat/)
