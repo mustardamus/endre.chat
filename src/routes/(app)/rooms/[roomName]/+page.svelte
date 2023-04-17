@@ -13,7 +13,9 @@
   let messages = Immutable.List([]);
   let unsubscribe = () => {};
 
-  $: messages = Immutable.List(data.room.messages);
+  onMount(() => {
+    messages = Immutable.List(data.room.messages);
+  });
 
   function addOptimisticMessage(uuid, content) {
     messages = messages.push({
