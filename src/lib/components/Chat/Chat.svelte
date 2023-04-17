@@ -73,7 +73,7 @@
   </div>
 
   <div class="flex-grow overflow-scroll" bind:this={messagesDiv}>
-    <div class="container mx-auto">
+    <div class="container mx-auto mb-8">
       {#each messages as message}
         {#if message.type === "joined"}
           <div class="mx-2">{message.userName} joined</div>

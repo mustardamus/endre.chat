@@ -31,14 +31,20 @@
   };
 </script>
 
-<div class="chat-message flex my-5" class:is-by-current-user={isByCurrentUser}>
-  <div class="avatar w-[64px]">
-    <Avatar seed={message.user.avatarSeed} color={message.user.avatarColor} />
+<div class="chat-message flex mt-5" class:is-by-current-user={isByCurrentUser}>
+  <div class="avatar w-[38px] relative z-2">
+    <Avatar
+      seed={message.user.avatarSeed}
+      color={message.user.avatarColor}
+      size="78"
+      strokeWidth="2"
+      class="z-1 relative"
+    />
   </div>
 
   <div class="flex-grow">
     <div
-      class="bg-[#4169E1] px-7 py-5 rounded mx-7 shadow-lg"
+      class="bg-dark-900 px-7 py-5 rounded mx-6 shadow-lg"
       class:opacity-50={message.error || message.pending}
     >
       {#if message.isOptimistic && !animationDone}
@@ -53,9 +59,11 @@
     </div>
 
     <div class="flex items-center metadata text-sm px-9 pt-2">
-      <span class="text-gray-700">{message.user.name}</span>
-      <span class="text-gray-400 mr-1 ml-1">-</span>
-      <span class="text-gray-400">{dateformat(message.createdAt)}</span>
+      <span class="text-gray-200">{message.user.name}</span>
+      <span class="text-gray-600 mr-1 ml-1">-</span>
+      <span class="text-gray-600"
+        >{dateformat(message.createdAt, "HH:MM:ss")}</span
+      >
       {#if message.error}
         <div class="i-tabler-exclamation-circle text-red-500 text-xl ml-1" />
         <div class="ml-1 color-red-500">{message.errorMessage}</div>
@@ -77,13 +85,14 @@
 </div>
 
 <style>
-  :global(.chat-message .avatar svg) {
-    transform-origin: left top;
-    transform: scale(0.5);
-  }
-
   .chat-message.is-by-current-user .avatar {
     order: 9999;
+  }
+
+  :global(.chat-message.is-by-current-user .avatar svg) {
+    position: absolute;
+    top: 0;
+    left: -32px;
   }
 
   .chat-message:not(.flex.is-by-current-user) .metadata {
