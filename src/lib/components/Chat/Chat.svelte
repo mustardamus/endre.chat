@@ -24,18 +24,7 @@
   };
 
   export const handleResend = (event) => {
-    console.log(event.detail);
-
-    messagesById = messagesById.set(
-      id,
-      Object.assign(messagesById.get(id), {
-        error: false,
-        errorMessage: "",
-        pending: true,
-      })
-    );
-
-    send(event.detail.id, event.detail.contentOriginal, room.id);
+    dispatch("resend", event.detail);
   };
 
   async function onSubmit() {

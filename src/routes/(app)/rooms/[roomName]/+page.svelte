@@ -60,10 +60,14 @@
   async function onMessage({ detail }) {
     const uuid = nanoid();
     const message = detail;
-    const body = JSON.stringify({ uuid, message, roomId: data.room.id });
 
     addOptimisticMessage(uuid, message);
 
+    sendMessage(uuid, message, data.room.id);
+  }
+
+  async function sendMessage(uuid, message, roomId) {
+    const body = JSON.stringify({ uuid, message, roomId });
     const response = await fetch("/api/messages", { method: "POST", body });
     const json = await response.json();
 
@@ -72,6 +76,20 @@
     } else {
       errorOptimisticMessage(uuid, json.error);
     }
+  }
+
+  async function onResend({ detail }) {
+    let uuid = detail.uuid;
+    messages = messages.map((message) => {
+      if (message.uuid === uuid) {
+        message.errorMessage = "";
+        message.error = false;
+        message.pending = true;
+      }
+      return message;
+    });
+
+    sendMessage(uuid, detail.contentOriginal, data.room.id);
   }
 
   async function onRoomJoinSubmit({ detail }) {
@@ -116,6 +134,7 @@
     messages={messages.toJS()}
     currentUser={data.currentUser}
     on:message={onMessage}
+    on:resend={onResend}
     bind:scrollDown
   />
 {:else}
